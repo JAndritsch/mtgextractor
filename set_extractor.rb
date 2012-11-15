@@ -25,9 +25,7 @@ class SetExtractor
   def extract_card_detail_urls(html)
     match_data = /Card\/Details\.aspx\?multiverseid=(\d+)/
     multiverse_ids = html.scan(match_data).flatten.uniq
-    card_urls = []
-    multiverse_ids.each {|id| card_urls << "http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=#{id}" }
-    card_urls
+    multiverse_ids.collect {|id| "http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=#{id}" }
   end
 
 end
