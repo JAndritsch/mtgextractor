@@ -28,7 +28,7 @@ class CardExtractor
 
     card_details['name'] = extract_name(response) 
     card_details['mana_cost'] = extract_mana_cost(response) 
-    card_details['converted_cost'] = extract_converted_cost(response) 
+    card_details['converted_cost'] = extract_converted_mana_cost(response) 
     card_details['types'] = extract_types(response) 
     card_details['oracle_text'] = extract_oracle_text(response) 
     card_details['power'] = extract_power(response) 
@@ -40,8 +40,6 @@ class CardExtractor
     card_details
   end
 
-  private
-
   def extract_multiverse_id(url)
     url.match(/multiverseid=(\d+)/)[1]
   end
@@ -51,7 +49,7 @@ class CardExtractor
   end
 
   def extract_name(html)
-    match_data = /Card Name:<\/div>\s+<div class="value">\s+(.+)<\/div>/
+    match_data = /<span id="ctl00_ctl00_ctl00_MainContent_SubContent_SubContentHeader_subtitleDisplay"[^>]*>([^<]+)/
     html.match(match_data)[1]
   end
 
@@ -61,7 +59,7 @@ class CardExtractor
     match.length > 0 ? match : nil
   end
 
-  def extract_converted_cost(html)
+  def extract_converted_mana_cost(html)
     match_data = /Converted Mana Cost:<\/div>\s+<div class="value">\s+(\d+)/
     match = html.match(match_data)
     match ? match[1] : 0
