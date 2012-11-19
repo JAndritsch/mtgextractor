@@ -28,21 +28,21 @@ class CardExtractor
   def get_card_details
     response = RestClient.get(@url)
     card_details = {}
-    card_details['gatherer_url'] = @url
-    card_details['multiverse_id'] = extract_multiverse_id(@url)
-    card_details['image_url'] = build_image_url(card_details['multiverse_id'])
+    card_details['gatherer_url']     = @url
+    card_details['multiverse_id']    = extract_multiverse_id(@url)
+    card_details['image_url']        = build_image_url(card_details['multiverse_id'])
 
-    card_details['name'] = extract_name(response) 
-    card_details['mana_cost'] = extract_mana_cost(response) 
-    card_details['converted_cost'] = extract_converted_mana_cost(response) 
-    card_details['types'] = extract_types(response) 
-    card_details['oracle_text'] = extract_oracle_text(response) 
-    card_details['power'] = extract_power(response) 
-    card_details['toughness'] = extract_toughness(response) 
-    card_details['loyalty'] = extract_loyalty(response) 
-    card_details['color_indicator'] = extract_color_indicator(response)
-    card_details['rarity'] = extract_rarity(response) 
-    card_details['colors'] = determine_colors(card_details)
+    card_details['name']             = extract_name(response)
+    card_details['mana_cost']        = extract_mana_cost(response)
+    card_details['converted_cost']   = extract_converted_mana_cost(response)
+    card_details['types']            = extract_types(response)
+    card_details['oracle_text']      = extract_oracle_text(response)
+    card_details['power']            = extract_power(response)
+    card_details['toughness']        = extract_toughness(response)
+    card_details['loyalty']          = extract_loyalty(response)
+    card_details['color_indicator']  = extract_color_indicator(response)
+    card_details['rarity']           = extract_rarity(response)
+    card_details['colors']           = determine_colors(card_details)
     card_details
   end
 
