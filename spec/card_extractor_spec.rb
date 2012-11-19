@@ -83,6 +83,25 @@ describe 'CardExtractor' do
     end
   end
 
+  describe '#multipart_card?' do
+    it "should determine whether a card is a multi-part card" do
+      html = read_gatherer_page('evil_twin.html')
+      @card_extractor.multipart_card?(html).should be_false
+
+      html = read_gatherer_page('kruin_outlaw.html')
+      @card_extractor.multipart_card?(html).should be_false
+
+      html = read_gatherer_page('terror_of_kruin_pass.html')
+      @card_extractor.multipart_card?(html).should be_false
+
+      html = read_gatherer_page('fire_ice_fire.html')
+      @card_extractor.multipart_card?(html).should be_true
+
+      html = read_gatherer_page('fire_ice_ice.html')
+      @card_extractor.multipart_card?(html).should be_true
+    end
+  end
+
   describe '#extract_mana_cost' do
     before :each do
       @card_extractor.stub(:extract_name)
@@ -118,16 +137,26 @@ describe 'CardExtractor' do
     end
 
     context 'double-sided card' do
+      # NOTE: Using a regex to simulate grabbing the correct mana cost section
+      # on a double-sided card's Gatherer page.
       it "should determine a card's mana cost from a Gatherer card web page" do
+        name = 'Kruin Outlaw'
         html = read_gatherer_page('kruin_outlaw.html')
-        @card_extractor.should_receive(:extract_name).with(html)
-        @card_extractor.should_receive(:convert_mana_cost)
-        @card_extractor.extract_mana_cost(html)
+        card_section_regex = /(Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?Types:)/m
+        card_section = html.match(card_section_regex)[1]
 
-        html = read_gatherer_page('terror_of_kruin_pass.html')
-        @card_extractor.should_receive(:extract_name).with(html)
+        @card_extractor.should_receive(:extract_name).with(card_section)
         @card_extractor.should_receive(:convert_mana_cost)
-        @card_extractor.extract_mana_cost(html)
+        @card_extractor.extract_mana_cost(card_section)
+
+        name = 'Terror of Kruin Pass'
+        html = read_gatherer_page('terror_of_kruin_pass.html')
+        card_section_regex = /(Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?Types:)/m
+        card_section = html.match(card_section_regex)[1]
+
+        @card_extractor.should_receive(:extract_name).with(card_section)
+        @card_extractor.should_not_receive(:convert_mana_cost)
+        @card_extractor.extract_mana_cost(card_section)
       end
     end
   end
@@ -170,21 +199,80 @@ describe 'CardExtractor' do
   end
 
   describe '#extract_converted_mana_cost' do
-    it "should determine a card's converted mana cost from a Gatherer card web page" do
+    before :each do
+      @card_extractor.stub(:extract_name)
+      @card_extractor.stub(:convert_converted_mana_cost)
+    end
+
+    context 'normal card' do
+      it "should determine a card's converted mana cost from a Gatherer card web page" do
+        html = read_gatherer_page('eldrazi_conscription.html')
+        @card_extractor.should_receive(:extract_name).with(html)
+        @card_extractor.should_receive(:convert_converted_mana_cost)
+        @card_extractor.extract_converted_mana_cost(html)
+
+        html = read_gatherer_page('forest.html')
+        @card_extractor.should_receive(:extract_name).with(html)
+        @card_extractor.should_not_receive(:convert_converted_mana_cost)
+        @card_extractor.extract_converted_mana_cost(html)
+      end
+    end
+
+    context 'multi-part card' do
+      it "should determine a card's converted mana cost from a Gatherer card web page" do
+        html = read_gatherer_page('fire_ice_fire.html')
+        @card_extractor.should_not_receive(:extract_name).with(html)
+        @card_extractor.should_receive(:convert_converted_mana_cost)
+        @card_extractor.extract_converted_mana_cost(html)
+
+        html = read_gatherer_page('fire_ice_ice.html')
+        @card_extractor.should_not_receive(:extract_name).with(html)
+        @card_extractor.should_receive(:convert_converted_mana_cost)
+        @card_extractor.extract_converted_mana_cost(html)
+      end
+    end
+
+    context 'double-sided card' do
+      # NOTE: Using a regex to simulate grabbing the correct mana cost section
+      # on a double-sided card's Gatherer page.
+      it "should determine a card's mana cost from a Gatherer card web page" do
+        name = 'Kruin Outlaw'
+        html = read_gatherer_page('kruin_outlaw.html')
+        card_section_regex = /(Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?Types:)/m
+        card_section = html.match(card_section_regex)[1]
+
+        @card_extractor.should_receive(:extract_name).with(card_section)
+        @card_extractor.should_receive(:convert_converted_mana_cost)
+        @card_extractor.extract_converted_mana_cost(card_section)
+
+        name = 'Terror of Kruin Pass'
+        html = read_gatherer_page('terror_of_kruin_pass.html')
+        card_section_regex = /(Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?Types:)/m
+        card_section = html.match(card_section_regex)[1]
+
+        @card_extractor.should_receive(:extract_name).with(card_section)
+        @card_extractor.should_not_receive(:convert_converted_mana_cost)
+        @card_extractor.extract_converted_mana_cost(card_section)
+      end
+    end
+  end
+
+  describe '#convert_converted_mana_cost' do
+    it "should convert converted mana cost html into a textual representation" do
       html = read_gatherer_page('ashenmoor_liege.html')
-      @card_extractor.extract_converted_mana_cost(html).should == "4"
+      @card_extractor.convert_converted_mana_cost(html).should == "4"
 
       html = read_gatherer_page('crimson_kobolds.html')
-      @card_extractor.extract_converted_mana_cost(html).should == "0"
+      @card_extractor.convert_converted_mana_cost(html).should == "0"
 
       html = read_gatherer_page('devils_play.html')
-      @card_extractor.extract_converted_mana_cost(html).should == "1"
+      @card_extractor.convert_converted_mana_cost(html).should == "1"
 
       html = read_gatherer_page('hinterland_harbor.html')
-      @card_extractor.extract_converted_mana_cost(html).should == "0"
+      @card_extractor.convert_converted_mana_cost(html).should == "0"
 
       html = read_gatherer_page('moltensteel_dragon.html')
-      @card_extractor.extract_converted_mana_cost(html).should == "6"
+      @card_extractor.convert_converted_mana_cost(html).should == "6"
     end
   end
 

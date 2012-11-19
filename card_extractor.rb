@@ -59,6 +59,10 @@ class CardExtractor
     html.match(match_data)[1]
   end
 
+  def multipart_card?(html)
+    html.match(/This is one part of the multi-part card/) != nil
+  end
+
   def extract_mana_cost(html)
     # Gatherer displays both sides of double-sided cards (e.g., Kruin Outlaw
     # and Terror of Kruin Pass) on the same page, yet the "back" side of such,
@@ -75,7 +79,7 @@ class CardExtractor
     # Solution: identify multi-part cards, and pull the mana cost out simply for
     # these cards, because there will be only one mana cost block on the page.
     # All other cards, allow for the possibility that it's a double-sided card.
-    if html.match(/This is one part of the multi-part card/)
+    if multipart_card?(html)
       mana_cost = convert_mana_cost(html)
     else
       name = extract_name(html)
@@ -87,14 +91,28 @@ class CardExtractor
   end
 
   def convert_mana_cost(html)
-      mana_cost_regex = /<img src="\/Handlers\/Image\.ashx\?size=medium&amp;name=([a-zA-Z0-9]+)&amp/
-      match = html.scan(mana_cost_regex).flatten
-      match.length > 0 ? match : nil
+    mana_cost_regex = /<img src="\/Handlers\/Image\.ashx\?size=medium&amp;name=([a-zA-Z0-9]+)&amp/
+    match = html.scan(mana_cost_regex).flatten
+    match.length > 0 ? match : nil
   end
 
   def extract_converted_mana_cost(html)
-    match_data = /Converted Mana Cost:<\/div>\s+<div class="value">\s+(\d+)/
-    match = html.match(match_data)
+    # See remarks for #extract_mana_cost, above. Similar processing with respect
+    # to double-sided cards is necessary here as well.
+    if multipart_card?(html)
+      cmc = convert_converted_mana_cost(html)
+    else
+      name = extract_name(html)
+      cmc_group_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?Converted Mana Cost:.+?<div[^>]*>(.+?)<\/div>/m
+      cmc_group = html.match(cmc_group_regex)
+      cmc = cmc_group ? convert_converted_mana_cost(cmc_group[1]) : nil
+    end
+    cmc
+  end
+
+  def convert_converted_mana_cost(html)
+    cmc_regex = /Converted Mana Cost:<\/div>\s+<div class="value">\s+(\d+)/
+    match = html.match(cmc_regex)
     match ? match[1] : "0"
   end
 
