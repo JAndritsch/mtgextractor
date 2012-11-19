@@ -66,6 +66,12 @@ describe 'CardExtractor' do
       html = read_gatherer_page('emrakul_the_aeons_torn.html')
       @card_extractor.extract_name(html).should == "Emrakul, the Aeons Torn"
 
+      html = read_gatherer_page('fire_ice_fire.html')
+      @card_extractor.extract_name(html).should == "Fire // Ice"
+
+      html = read_gatherer_page('fire_ice_ice.html')
+      @card_extractor.extract_name(html).should == "Fire // Ice"
+
       html = read_gatherer_page('kruin_outlaw.html')
       @card_extractor.extract_name(html).should == "Kruin Outlaw"
 
@@ -78,47 +84,115 @@ describe 'CardExtractor' do
   end
 
   describe '#extract_mana_cost' do
-    it "should determine a card's mana cost from a Gatherer card web page" do
+    before :each do
+      @card_extractor.stub(:extract_name)
+      @card_extractor.stub(:convert_mana_cost)
+    end
+
+    context 'normal card' do
+      it "should determine a card's mana cost from a Gatherer card web page" do
+        html = read_gatherer_page('eldrazi_conscription.html')
+        @card_extractor.should_receive(:extract_name).with(html)
+        @card_extractor.should_receive(:convert_mana_cost)
+        @card_extractor.extract_mana_cost(html)
+
+        html = read_gatherer_page('forest.html')
+        @card_extractor.should_receive(:extract_name).with(html)
+        @card_extractor.should_not_receive(:convert_mana_cost)
+        @card_extractor.extract_mana_cost(html)
+      end
+    end
+
+    context 'multi-part card' do
+      it "should determine a card's mana cost from a Gatherer card web page" do
+        html = read_gatherer_page('fire_ice_fire.html')
+        @card_extractor.should_not_receive(:extract_name).with(html)
+        @card_extractor.should_receive(:convert_mana_cost)
+        @card_extractor.extract_mana_cost(html)
+
+        html = read_gatherer_page('fire_ice_ice.html')
+        @card_extractor.should_not_receive(:extract_name).with(html)
+        @card_extractor.should_receive(:convert_mana_cost)
+        @card_extractor.extract_mana_cost(html)
+      end
+    end
+
+    context 'double-sided card' do
+      it "should determine a card's mana cost from a Gatherer card web page" do
+        html = read_gatherer_page('kruin_outlaw.html')
+        @card_extractor.should_receive(:extract_name).with(html)
+        @card_extractor.should_receive(:convert_mana_cost)
+        @card_extractor.extract_mana_cost(html)
+
+        html = read_gatherer_page('terror_of_kruin_pass.html')
+        @card_extractor.should_receive(:extract_name).with(html)
+        @card_extractor.should_receive(:convert_mana_cost)
+        @card_extractor.extract_mana_cost(html)
+      end
+    end
+  end
+
+  describe '#convert_mana_cost' do
+    it "should convert mana cost html into a textual representation" do
+      html = read_gatherer_page('ashenmoor_liege.html')
+      @card_extractor.convert_mana_cost(html).should == ["1", "BR", "BR", "BR"]
+
+      html = read_gatherer_page('blazing_torch.html')
+      @card_extractor.convert_mana_cost(html).should == ["1"]
+
+      html = read_gatherer_page('callow_jushi.html')
+      @card_extractor.convert_mana_cost(html).should == ["1", "U", "U"]
+
+      html = read_gatherer_page('cover_of_winter.html')
+      @card_extractor.convert_mana_cost(html).should == ["2", "W"]
+
+      html = read_gatherer_page('crimson_kobolds.html')
+      @card_extractor.convert_mana_cost(html).should == ["0"]
+
       html = read_gatherer_page('devils_play.html')
-      @card_extractor.extract_mana_cost(html).should =~ ['R', 'X']
+      @card_extractor.convert_mana_cost(html).should == ["X", "R"]
+
+      html = read_gatherer_page('edric_spymaster_of_trest.html')
+      @card_extractor.convert_mana_cost(html).should == ["1", "G", "U"]
 
       html = read_gatherer_page('emrakul_the_aeons_torn.html')
-      @card_extractor.extract_mana_cost(html).should == ['15']
+      @card_extractor.convert_mana_cost(html).should == ["15"]
 
-      html = read_gatherer_page('kruin_outlaw.html')
-      @card_extractor.extract_mana_cost(html).should =~ ['1', 'R', 'R']
+      html = read_gatherer_page('forest.html')
+      @card_extractor.convert_mana_cost(html).should be_nil
 
-      # legit failure...CardExtractor can't process double-sided cards yet
-      html = read_gatherer_page('terror_of_kruin_pass.html')
-      @card_extractor.extract_mana_cost(html).should == [] 
+      html = read_gatherer_page('liliana_of_the_veil.html')
+      @card_extractor.convert_mana_cost(html).should == ["1", "B", "B"]
 
-      html = read_gatherer_page('village_bell-ringer.html')
-      @card_extractor.extract_mana_cost(html).should =~ ['W', '2'] 
+      html = read_gatherer_page('moltensteel_dragon.html')
+      @card_extractor.convert_mana_cost(html).should == ["4", "RP", "RP"]
     end
   end
 
   describe '#extract_converted_mana_cost' do
     it "should determine a card's converted mana cost from a Gatherer card web page" do
+      html = read_gatherer_page('ashenmoor_liege.html')
+      @card_extractor.extract_converted_mana_cost(html).should == "4"
+
+      html = read_gatherer_page('crimson_kobolds.html')
+      @card_extractor.extract_converted_mana_cost(html).should == "0"
+
       html = read_gatherer_page('devils_play.html')
       @card_extractor.extract_converted_mana_cost(html).should == "1"
 
-      html = read_gatherer_page('emrakul_the_aeons_torn.html')
-      @card_extractor.extract_converted_mana_cost(html).should == "15"
-
-      html = read_gatherer_page('kruin_outlaw.html')
-      @card_extractor.extract_converted_mana_cost(html).should == "3"
-
-      # legit failure...CardExtractor can't process double-sided cards yet
-      html = read_gatherer_page('terror_of_kruin_pass.html')
+      html = read_gatherer_page('hinterland_harbor.html')
       @card_extractor.extract_converted_mana_cost(html).should == "0"
 
-      html = read_gatherer_page('village_bell-ringer.html')
-      @card_extractor.extract_converted_mana_cost(html).should == "3"
+      html = read_gatherer_page('moltensteel_dragon.html')
+      @card_extractor.extract_converted_mana_cost(html).should == "6"
     end
   end
 
   describe '#extract_types' do
     it "should extract all of a card's types from a Gatherer card web page" do
+      html = read_gatherer_page('ancient_grudge.html')
+      @card_extractor.extract_types(html).should == "Instant"
+      # TODO: Break returned type string into individual pieces?
       true.should be_false
     end
   end
