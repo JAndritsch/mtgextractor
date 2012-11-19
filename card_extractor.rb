@@ -110,13 +110,13 @@ class CardExtractor
       "Black" => "B"
     }
 
-    match = card_details['mana_cost']
-    match = match.join("").scan(/[ubrgw]/i) if match
+    mana_cost = card_details['mana_cost']
+    match = mana_cost.join("").scan(/[ubrgw]/i) if mana_cost
 
     indicator = card_details['color_indicator']
     if indicator
       card_colors = [indicator_to_color[indicator]]
-    elsif match
+    elsif match.length > 0
       card_colors = match.flatten.uniq
     else
       card_colors = ['colorless']

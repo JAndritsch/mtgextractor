@@ -1,6 +1,8 @@
 require './set_extractor'
 require './card_extractor'
 
+# Note that this is just a smoke test of the two scripts. 
+
 print "Enter the full set name you'd like to process: "
 set = gets.chomp
 

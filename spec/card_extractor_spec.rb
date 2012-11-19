@@ -79,13 +79,41 @@ describe 'CardExtractor' do
 
   describe '#extract_mana_cost' do
     it "should determine a card's mana cost from a Gatherer card web page" do
-      true.should be_false
+      html = read_gatherer_page('devils_play.html')
+      @card_extractor.extract_mana_cost(html).should =~ ['R', 'X']
+
+      html = read_gatherer_page('emrakul_the_aeons_torn.html')
+      @card_extractor.extract_mana_cost(html).should == ['15']
+
+      html = read_gatherer_page('kruin_outlaw.html')
+      @card_extractor.extract_mana_cost(html).should =~ ['1', 'R', 'R']
+
+      # legit failure...CardExtractor can't process double-sided cards yet
+      html = read_gatherer_page('terror_of_kruin_pass.html')
+      @card_extractor.extract_mana_cost(html).should == [] 
+
+      html = read_gatherer_page('village_bell-ringer.html')
+      @card_extractor.extract_mana_cost(html).should =~ ['W', '2'] 
     end
   end
 
   describe '#extract_converted_mana_cost' do
     it "should determine a card's converted mana cost from a Gatherer card web page" do
-      true.should be_false
+      html = read_gatherer_page('devils_play.html')
+      @card_extractor.extract_converted_mana_cost(html).should == "1"
+
+      html = read_gatherer_page('emrakul_the_aeons_torn.html')
+      @card_extractor.extract_converted_mana_cost(html).should == "15"
+
+      html = read_gatherer_page('kruin_outlaw.html')
+      @card_extractor.extract_converted_mana_cost(html).should == "3"
+
+      # legit failure...CardExtractor can't process double-sided cards yet
+      html = read_gatherer_page('terror_of_kruin_pass.html')
+      @card_extractor.extract_converted_mana_cost(html).should == "0"
+
+      html = read_gatherer_page('village_bell-ringer.html')
+      @card_extractor.extract_converted_mana_cost(html).should == "3"
     end
   end
 
@@ -127,7 +155,9 @@ describe 'CardExtractor' do
 
   describe '#determine_colors' do
     it "should determine the card's colors from a Gatherer card web page" do
-      true.should be_false
+      @card_extractor.determine_colors('mana_cost' => ["1", "W", "R"]).should =~ ["W", "R"]
+      @card_extractor.determine_colors('mana_cost' => ["0"]).should == ["colorless"]
+      @card_extractor.determine_colors('mana_cost' => ["1"], 'color_indicator' => 'Red').should == ["R"]
     end
   end
 
