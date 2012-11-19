@@ -205,25 +205,59 @@ describe 'CardExtractor' do
 
   describe '#extract_power' do
     it "should extract a creature's power from a Gatherer card web page" do
-      true.should be_false
+      html = read_gatherer_page('ashenmoor_liege.html')
+      @card_extractor.extract_power(html).should == "4"
+
+      html = read_gatherer_page('crimson_kobolds.html')
+      @card_extractor.extract_power(html).should == "0"
+
+      html = read_gatherer_page('devils_play.html')
+      @card_extractor.extract_power(html).should be_nil
+
+      html = read_gatherer_page('hinterland_harbor.html')
+      @card_extractor.extract_power(html).should be_nil
+
+      html = read_gatherer_page('moltensteel_dragon.html')
+      @card_extractor.extract_power(html).should == "4"
     end
   end
 
   describe '#extract_toughness' do
     it "should extract a creature's toughness from a Gatherer card web page" do
-      true.should be_false
+      html = read_gatherer_page('ashenmoor_liege.html')
+      @card_extractor.extract_toughness(html).should == "1"
+
+      html = read_gatherer_page('crimson_kobolds.html')
+      @card_extractor.extract_toughness(html).should == "1"
+
+      html = read_gatherer_page('devils_play.html')
+      @card_extractor.extract_toughness(html).should be_nil
+
+      html = read_gatherer_page('hinterland_harbor.html')
+      @card_extractor.extract_toughness(html).should be_nil
+
+      html = read_gatherer_page('moltensteel_dragon.html')
+      @card_extractor.extract_toughness(html).should == "4"
     end
   end
 
   describe '#extract_loyalty' do
     it "should extract a planeswalker's loyalty from a Gatherer card web page" do
-      true.should be_false
+      html = read_gatherer_page('ashenmoor_liege.html')
+      @card_extractor.extract_loyalty(html).should be_nil
+
+      html = read_gatherer_page('liliana_of_the_veil.html')
+      @card_extractor.extract_loyalty(html).should == "3"
     end
   end
 
   describe '#extract_color_indicator' do
     it "should extract the card's color indicator from a Gatherer card web page" do
-      true.should be_false
+      html = read_gatherer_page('crimson_kobolds.html')
+      @card_extractor.extract_color_indicator(html).should == "Red"
+
+      html = read_gatherer_page('emrakul_the_aeons_torn.html')
+      @card_extractor.extract_color_indicator(html).should be_nil
     end
   end
 
@@ -237,7 +271,20 @@ describe 'CardExtractor' do
 
   describe '#extract_rarity' do
     it "should extract the card's rarity from a Gatherer card web page" do
-      true.should be_false
+      html = read_gatherer_page('ashenmoor_liege.html')
+      @card_extractor.extract_rarity(html).should == "Rare"
+
+      html = read_gatherer_page('crimson_kobolds.html')
+      @card_extractor.extract_rarity(html).should == "Common"
+
+      html = read_gatherer_page('devils_play.html')
+      @card_extractor.extract_rarity(html).should == "Rare"
+
+      html = read_gatherer_page('hinterland_harbor.html')
+      @card_extractor.extract_rarity(html).should == "Rare"
+
+      html = read_gatherer_page('forest.html')
+      @card_extractor.extract_rarity(html).should == "Basic Land"
     end
   end
 end
