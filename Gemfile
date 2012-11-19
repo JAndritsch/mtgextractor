@@ -1,4 +1,4 @@
 source 'http://rubygems.org'
 
-gem 'restclient'
+gem 'rest-client'
 gem 'rspec'
