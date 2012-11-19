@@ -1,0 +1,29 @@
+Features:
+------------------------------------------------
+
+ - Possibly make MTGExtractor into a Ruby gem. I'm thinking this could end up being
+ more than just a collection of Ruby scripts used to scrape Gatherer. Perhaps it could
+ provide "scaffolding" for creating MTG Rails applications. For example, we could ship 
+ several classes for interacting with cards and card data through ActiveRecord.
+
+  Example models:
+
+    Card, Set, CardType, etc... 
+
+ Ultimately, I'd want to source this gem in my Rails app's Gemfile, run a rake task to
+ set up the gem for the first time, and then be able to run a rake task to process 
+ all the sets (or individual ones) whenever I want. 
+
+  Example tasks:  
+  
+    rake mtgextractor:setup             # Create tables used to store MTG card data
+    rake mtgextractor:update_all_sets   # Extracts every card in every set from Gatherer and saves it to the DB
+    rake mtgextractor:update_set <name> # Extracts every card in given set from Gatherer and saves it to the DB
+            
+
+Bugs / Refactorings:
+------------------------------------------------
+
+- Break returned type string into individual pieces
+- Fix extraction of oracle texts
+
