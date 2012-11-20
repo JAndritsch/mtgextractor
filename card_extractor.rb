@@ -117,10 +117,19 @@ class CardExtractor
   end
 
   def extract_types(html)
-    # TODO: Break returned type string into individual pieces?
     html = html.force_encoding("utf-8")
-    match_data = /Types:<\/div>\s+<div class="value">\s+([a-zA-Z\s-—]+)<\/div>/
-    html.match(match_data)[1]
+    if multipart_card?(html)
+      card_types_regex = /Types:<\/div>\s+<div class="value">\s+([a-zA-Z\s-—]+)<\/div>/
+    else
+      name = extract_name(html)
+      card_types_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?Types:<\/div>\s+<div class="value">\s+([a-zA-Z\s-—]+)<\/div>)/m
+    end
+    card_types = html.match(card_types_regex)[1]
+    if card_types
+      card_types.split("—").collect {|type| type.strip }
+    else
+      card_types
+    end
   end
 
   def extract_oracle_text(html)

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require_relative '../card_extractor'
 include RSpec::Matchers
 
@@ -234,7 +236,7 @@ describe 'CardExtractor' do
 
     context 'double-sided card' do
       # NOTE: Using a regex to simulate grabbing the correct mana cost section
-      # on a double-sided card's Gatherer page.
+      # on a double-sided card's Gatherer page. 
       it "should determine a card's mana cost from a Gatherer card web page" do
         name = 'Kruin Outlaw'
         html = read_gatherer_page('kruin_outlaw.html')
@@ -279,9 +281,16 @@ describe 'CardExtractor' do
   describe '#extract_types' do
     it "should extract all of a card's types from a Gatherer card web page" do
       html = read_gatherer_page('ancient_grudge.html')
-      @card_extractor.extract_types(html).should == "Instant"
-      # TODO: Break returned type string into individual pieces?
-      true.should be_false
+      @card_extractor.extract_types(html).should == ['Instant']
+
+      html = read_gatherer_page('kruin_outlaw.html')
+      @card_extractor.extract_types(html).should == ['Creature', 'Human Rogue Werewolf']
+
+      html = read_gatherer_page('terror_of_kruin_pass.html')
+      @card_extractor.extract_types(html).should == ['Creature', 'Werewolf']
+
+      html = read_gatherer_page('fire_ice_ice.html')
+      @card_extractor.extract_types(html).should == ['Instant']
     end
   end
 
