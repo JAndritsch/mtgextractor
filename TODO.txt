@@ -24,6 +24,7 @@ Features:
 Bugs / Refactorings:
 ------------------------------------------------
 
-- Break returned type string into individual pieces
+- Fix extraction of converted mana cost. It appears to return a 0 for the front side
+of a double-faced card.
 - Fix extraction of oracle texts
 
