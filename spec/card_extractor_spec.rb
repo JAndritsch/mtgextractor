@@ -316,6 +316,12 @@ describe 'CardExtractor' do
 
       html = read_gatherer_page('moltensteel_dragon.html')
       @card_extractor.extract_power(html).should == "4"
+
+      html = read_gatherer_page('kruin_outlaw.html')
+      @card_extractor.extract_power(html).should == "2"
+
+      html = read_gatherer_page('terror_of_kruin_pass.html')
+      @card_extractor.extract_power(html).should == "3"
     end
   end
 
@@ -335,6 +341,12 @@ describe 'CardExtractor' do
 
       html = read_gatherer_page('moltensteel_dragon.html')
       @card_extractor.extract_toughness(html).should == "4"
+
+      html = read_gatherer_page('kruin_outlaw.html')
+      @card_extractor.extract_toughness(html).should == "2"
+
+      html = read_gatherer_page('terror_of_kruin_pass.html')
+      @card_extractor.extract_toughness(html).should == "3"
     end
   end
 

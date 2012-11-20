@@ -139,14 +139,16 @@ class CardExtractor
   end
 
   def extract_power(html)
-    match_data = /P\/T:<\/div>\s+<div class="value">\s+(\d+) \/ \d+/
-    match = html.match(match_data)
+    name = extract_name(html)
+    creature_power_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?P\/T:<\/div>\s+<div class="value">\s+(\d+) \/ \d+)/m
+    match = html.match(creature_power_regex)
     match ? match[1] : nil
   end
 
   def extract_toughness(html)
-    match_data = /P\/T:<\/div>\s+<div class="value">\s+\d+ \/ (\d+)/
-    match = html.match(match_data)
+    name = extract_name(html)
+    creature_toughness_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?P\/T:<\/div>\s+<div class="value">\s+\d+ \/ (\d+))/m
+    match = html.match(creature_toughness_regex)
     match ? match[1] : nil
   end
 
