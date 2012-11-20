@@ -388,6 +388,21 @@ describe 'CardExtractor' do
 
       html = read_gatherer_page('emrakul_the_aeons_torn.html')
       @card_extractor.extract_color_indicator(html).should be_nil
+
+      html = read_gatherer_page('ashenmoor_liege.html')
+      @card_extractor.extract_color_indicator(html).should be_nil
+      
+      html = read_gatherer_page('moltensteel_dragon.html')
+      @card_extractor.extract_color_indicator(html).should be_nil
+
+      html = read_gatherer_page('edric_spymaster_of_trest.html')
+      @card_extractor.extract_color_indicator(html).should be_nil
+
+      html = read_gatherer_page('elbrus_the_binding_blade.html')
+      @card_extractor.extract_color_indicator(html).should == "Black"
+
+      html = read_gatherer_page('withengar_unbound.html')
+      @card_extractor.extract_color_indicator(html).should == "Black"
     end
   end
 
