@@ -39,7 +39,7 @@ class CardExtractor
     card_details['color_indicator']  = extract_color_indicator(response)
     card_details['rarity']           = extract_rarity(response)
     card_details['colors']           = determine_colors(card_details)
-    card_details['transformed_id']   = extract_transformed_multiverse_id(response)
+    card_details['transformed_id']   = extract_transformed_multiverse_id(card_details['multiverse_id'], response)
 
     card_details
   end
@@ -190,9 +190,8 @@ class CardExtractor
     match = html.match(match_data)[1]
   end
 
-  def extract_transformed_multiverse_id(html)
+  def extract_transformed_multiverse_id(card_multiverse_id, html)
     # Get the multiverse id of the transformed card, if one exists
-    card_multiverse_id = extract_multiverse_id(@url)
     multiverse_id_regex = /<img src="\.\.\/\.\.\/Handlers\/Image\.ashx\?multiverseid=(\d+)&amp;type=card/
     multiverse_ids_on_page = html.scan(multiverse_id_regex).flatten.uniq
     (multiverse_ids_on_page - [card_multiverse_id]).first

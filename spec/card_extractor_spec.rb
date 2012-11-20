@@ -400,12 +400,10 @@ describe 'CardExtractor' do
   describe '#extract_transformed_multiverse_id' do
     it "should extract the card's transformed multiverse id from a Gatherer card web page" do
       html = read_gatherer_page('kruin_outlaw.html')
-      @card_extractor.stub(:extract_multiverse_id).and_return('227084')
-      @card_extractor.extract_transformed_multiverse_id(html).should == '227090'
+      @card_extractor.extract_transformed_multiverse_id('227084', html).should == '227090'
 
-      @card_extractor.stub(:extract_multiverse_id).and_return('227090')
       html = read_gatherer_page('terror_of_kruin_pass.html')
-      @card_extractor.extract_transformed_multiverse_id(html).should == '227084'
+      @card_extractor.extract_transformed_multiverse_id('227090', html).should == '227084'
     end
   end
 end
