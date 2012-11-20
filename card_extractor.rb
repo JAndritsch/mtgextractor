@@ -124,7 +124,7 @@ class CardExtractor
     end
     card_types = html.match(card_types_regex)[1]
     if card_types
-      card_types.split("—").collect {|type| type.strip }
+      card_types.split("—").collect {|type| type.strip.split(' ')}.flatten
     else
       card_types
     end

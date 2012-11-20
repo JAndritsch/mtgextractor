@@ -284,13 +284,28 @@ describe 'CardExtractor' do
       @card_extractor.extract_types(html).should == ['Instant']
 
       html = read_gatherer_page('kruin_outlaw.html')
-      @card_extractor.extract_types(html).should == ['Creature', 'Human Rogue Werewolf']
+      @card_extractor.extract_types(html).should == ['Creature', 'Human', 'Rogue', 'Werewolf']
 
       html = read_gatherer_page('terror_of_kruin_pass.html')
       @card_extractor.extract_types(html).should == ['Creature', 'Werewolf']
 
       html = read_gatherer_page('fire_ice_ice.html')
       @card_extractor.extract_types(html).should == ['Instant']
+
+      html = read_gatherer_page('forest.html')
+      @card_extractor.extract_types(html).should == ['Basic', 'Land', 'Forest']
+
+      html = read_gatherer_page('gavony_township.html')
+      @card_extractor.extract_types(html).should == ['Land']
+
+      html = read_gatherer_page('edric_spymaster_of_trest.html')
+      @card_extractor.extract_types(html).should == ['Legendary', 'Creature', 'Elf', 'Rogue']
+
+      html = read_gatherer_page('eldrazi_conscription.html')
+      @card_extractor.extract_types(html).should == ['Tribal', 'Enchantment', 'Eldrazi', 'Aura']
+
+      html = read_gatherer_page('liliana_of_the_veil.html')
+      @card_extractor.extract_types(html).should == ['Planeswalker', 'Liliana']
     end
   end
 
