@@ -413,6 +413,12 @@ describe 'CardExtractor' do
       html = read_gatherer_page('hinterland_harbor.html')
       @card_extractor.extract_rarity(html).should == "Rare"
 
+      html = read_gatherer_page('elbrus_the_binding_blade.html')
+      @card_extractor.extract_rarity(html).should == "Mythic Rare"
+
+      html = read_gatherer_page('fire-field_ogre.html')
+      @card_extractor.extract_rarity(html).should == "Uncommon"
+
       html = read_gatherer_page('forest.html')
       @card_extractor.extract_rarity(html).should == "Basic Land"
     end
