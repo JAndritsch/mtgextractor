@@ -337,6 +337,9 @@ describe 'CardExtractor' do
 
       html = read_gatherer_page('terror_of_kruin_pass.html')
       @card_extractor.extract_power(html).should == "3"
+
+      html = read_gatherer_page('liliana_of_the_veil.html')
+      @card_extractor.extract_power(html).should be_nil
     end
   end
 
@@ -362,6 +365,9 @@ describe 'CardExtractor' do
 
       html = read_gatherer_page('terror_of_kruin_pass.html')
       @card_extractor.extract_toughness(html).should == "3"
+
+      html = read_gatherer_page('liliana_of_the_veil.html')
+      @card_extractor.extract_toughness(html).should be_nil
     end
   end
 
