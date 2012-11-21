@@ -25,5 +25,4 @@ Bugs / Refactorings:
 ------------------------------------------------
 
 - Fix extraction of oracle texts
-- Improve CardExtractor#determine_colors to handle unusual mana costs such as Ashenmoor Liege and Moltensteel Dragon have.
 
