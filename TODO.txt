@@ -26,4 +26,6 @@ Bugs / Refactorings:
 
 - Fix extraction of oracle texts
 - Create a method for extracting a card's printed text.
+- #extract_converted_mana_cost still returns 0. We're calling this method in #get_card_details. I added a test
+for this method to show it failing.
 
