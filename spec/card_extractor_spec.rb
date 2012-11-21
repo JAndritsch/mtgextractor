@@ -24,6 +24,7 @@ describe 'CardExtractor' do
       RestClient.should_receive(:get).with(@url)
       @card_extractor.should_receive(:extract_multiverse_id).with(@url)
       @card_extractor.should_receive(:build_image_url)
+      @card_extractor.should_receive(:extract_expansion).with(@response)
       @card_extractor.should_receive(:extract_name).with(@response)
       @card_extractor.should_receive(:extract_mana_cost).with(@response)
       @card_extractor.should_receive(:extract_converted_mana_cost).with(@response)
@@ -33,7 +34,8 @@ describe 'CardExtractor' do
       @card_extractor.should_receive(:extract_toughness).with(@response)
       @card_extractor.should_receive(:extract_loyalty).with(@response)
       @card_extractor.should_receive(:extract_rarity).with(@response)
-      @card_extractor.should_receive(:determine_colors)
+      @card_extractor.should_receive(:determine_colors).with(@response)
+      @card_extractor.should_receive(:extract_transformed_multiverse_id).with(@response)
 
       @card_extractor.get_card_details
     end
@@ -56,6 +58,28 @@ describe 'CardExtractor' do
 
       multiverse_id_forest = '889' # Forest (Unlimited v1)
       @card_extractor.build_image_url(multiverse_id_forest).should == "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=#{multiverse_id_forest}&type=card"
+    end
+  end
+
+  describe '#extract_expansion' do
+    it "should extract a card's expansion from a Gatherer card web page" do
+      html = read_gatherer_page('llanowar_elves.html')
+      @card_extractor.extract_expansion(html).should == 'Unlimited Edition'
+
+      html = read_gatherer_page('ashenmoor_liege.html')
+      @card_extractor.extract_expansion(html).should == 'Shadowmoor'
+
+      html = read_gatherer_page('fire_ice_fire.html')
+      @card_extractor.extract_expansion(html).should == 'Apocalypse'
+
+      html = read_gatherer_page('fire_ice_ice.html')
+      @card_extractor.extract_expansion(html).should == 'Apocalypse'
+
+      html = read_gatherer_page('kruin_outlaw.html')
+      @card_extractor.extract_expansion(html).should == 'Innistrad'
+
+      html = read_gatherer_page('terror_of_kruin_pass.html')
+      @card_extractor.extract_expansion(html).should == 'Innistrad'
     end
   end
 
@@ -470,19 +494,11 @@ describe 'CardExtractor' do
   describe '#extract_transformed_multiverse_id' do
     it "should extract the card's transformed multiverse id from a Gatherer card web page" do
       html = read_gatherer_page('kruin_outlaw.html')
-      kruin_outlaw_multiverse_id = '227084'
-      @card_extractor.extract_transformed_multiverse_id(kruin_outlaw_multiverse_id, html).should == '227090'
+      @card_extractor.extract_transformed_multiverse_id(html).should == '227090'
 
-      terror_of_kruin_pass_multiverse_id = '227090'
       html = read_gatherer_page('terror_of_kruin_pass.html')
-      @card_extractor.extract_transformed_multiverse_id(terror_of_kruin_pass_multiverse_id, html).should == '227084'
+      @card_extractor.extract_transformed_multiverse_id(html).should == '227084'
     end
   end
 
-  describe '#extract_converted_mana_cost' do
-    it "should extract the card's converted mana cost from a Gatherer card web page" do
-      html = read_gatherer_page('kruin_outlaw.html')
-      @card_extractor.extract_converted_mana_cost(html).should == '3'
-    end
-  end
 end
