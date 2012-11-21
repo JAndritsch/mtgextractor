@@ -36,9 +36,8 @@ class CardExtractor
     card_details['power']            = extract_power(response)
     card_details['toughness']        = extract_toughness(response)
     card_details['loyalty']          = extract_loyalty(response)
-    card_details['color_indicator']  = extract_color_indicator(response)
     card_details['rarity']           = extract_rarity(response)
-    card_details['colors']           = determine_colors(card_details)
+    card_details['colors']           = determine_colors(response)
     card_details['transformed_id']   = extract_transformed_multiverse_id(card_details['multiverse_id'], response)
 
     card_details
@@ -124,7 +123,7 @@ class CardExtractor
     end
     card_types = html.match(card_types_regex)[1]
     if card_types
-      card_types.split("—").collect {|type| type.strip.split(' ')}.flatten
+      card_types.split("—").collect {|type| type.strip.split(/\s+/)}.flatten
     else
       card_types
     end
@@ -157,12 +156,12 @@ class CardExtractor
   end
 
   def extract_color_indicator(html)
-    match_data = /Color Indicator:<\/div>\s+<div class="value">\s+(\w+)/
+    match_data = /Color Indicator:<\/div>\s+<div[^>]*>\s+(\w+)/
     match = html.match(match_data)
     match ? match[1] : nil
   end
 
-  def determine_colors(card_details)
+  def determine_colors(html)
     indicator_to_color = {
       "Red"   => "R",
       "Blue"  => "U",
@@ -171,13 +170,13 @@ class CardExtractor
       "Black" => "B"
     }
 
-    mana_cost = card_details['mana_cost']
+    mana_cost = extract_mana_cost(html)
     match = mana_cost.join("").scan(/[ubrgw]/i) if mana_cost
 
-    indicator = card_details['color_indicator']
+    indicator = extract_color_indicator(html)
     if indicator
       card_colors = [indicator_to_color[indicator]]
-    elsif match.length > 0
+    elsif match && match.length > 0
       card_colors = match.flatten.uniq
     else
       card_colors = ['colorless']

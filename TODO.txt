@@ -24,8 +24,6 @@ Features:
 Bugs / Refactorings:
 ------------------------------------------------
 
-- Fix extraction of converted mana cost. It appears to return a 0 for the front side
-of a double-faced card.
 - Fix extraction of oracle texts
 - Improve CardExtractor#determine_colors to handle unusual mana costs such as Ashenmoor Liege and Moltensteel Dragon have.
 

@@ -32,7 +32,6 @@ describe 'CardExtractor' do
       @card_extractor.should_receive(:extract_power).with(@response)
       @card_extractor.should_receive(:extract_toughness).with(@response)
       @card_extractor.should_receive(:extract_loyalty).with(@response)
-      @card_extractor.should_receive(:extract_color_indicator).with(@response)
       @card_extractor.should_receive(:extract_rarity).with(@response)
       @card_extractor.should_receive(:determine_colors)
 
@@ -408,9 +407,32 @@ describe 'CardExtractor' do
 
   describe '#determine_colors' do
     it "should determine the card's colors from a Gatherer card web page" do
-      @card_extractor.determine_colors('mana_cost' => ["1", "W", "R"]).should =~ ["W", "R"]
-      @card_extractor.determine_colors('mana_cost' => ["0"]).should == ["colorless"]
-      @card_extractor.determine_colors('mana_cost' => ["1"], 'color_indicator' => 'Red').should == ["R"]
+      html = read_gatherer_page('blazing_torch.html')
+      @card_extractor.determine_colors(html).should == ["colorless"]
+
+      html = read_gatherer_page('crimson_kobolds.html')
+      @card_extractor.determine_colors(html).should =~ ["R"]
+
+      html = read_gatherer_page('edric_spymaster_of_trest.html')
+      @card_extractor.determine_colors(html).should == ["G", "U"]
+
+      html = read_gatherer_page('emrakul_the_aeons_torn.html')
+      @card_extractor.determine_colors(html).should == ["colorless"]
+
+      html = read_gatherer_page('hinterland_harbor.html')
+      @card_extractor.determine_colors(html).should == ["colorless"]
+
+      html = read_gatherer_page('fire_ice_fire.html')
+      @card_extractor.determine_colors(html).should == ["R"]
+
+      html = read_gatherer_page('fire_ice_ice.html')
+      @card_extractor.determine_colors(html).should == ["U"]
+
+      html = read_gatherer_page('ashenmoor_liege.html')
+      @card_extractor.determine_colors(html).should == ["B", "R"]
+
+      html = read_gatherer_page('moltensteel_dragon.html')
+      @card_extractor.determine_colors(html).should == ["R"]
     end
   end
 
