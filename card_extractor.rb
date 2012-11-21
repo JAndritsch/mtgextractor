@@ -135,6 +135,10 @@ class CardExtractor
     match.length > 0 ? match.join("\n") : ""
   end
 
+  def extract_printed_text(html)
+    # TODO
+  end
+
   def extract_power(html)
     name = extract_name(html)
     creature_power_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?P\/T:<\/div>\s+<div class="value">\s+(\d+) \/ \d+)/m

@@ -25,4 +25,5 @@ Bugs / Refactorings:
 ------------------------------------------------
 
 - Fix extraction of oracle texts
+- Create a method for extracting a card's printed text.
 
