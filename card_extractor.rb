@@ -106,15 +106,15 @@ class CardExtractor
       cmc = convert_converted_mana_cost(html)
     else
       name = extract_name(html)
-      cmc_group_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?Converted Mana Cost:.+?<div[^>]*>(.+?)<\/div>/m
+      cmc_group_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?Converted Mana Cost:<\/div>\s+<div[^>]*>[^<]+/m
       cmc_group = html.match(cmc_group_regex)
-      cmc = cmc_group ? convert_converted_mana_cost(cmc_group[1]) : nil
+      cmc = cmc_group ? convert_converted_mana_cost(cmc_group[0]) : nil
     end
     cmc
   end
 
   def convert_converted_mana_cost(html)
-    cmc_regex = /Converted Mana Cost:<\/div>\s+<div class="value">\s+(\d+)/
+    cmc_regex = /Converted Mana Cost:<\/div>\s+<div[^>]*>\s+(\d+)/
     match = html.match(cmc_regex)
     match ? match[1] : "0"
   end

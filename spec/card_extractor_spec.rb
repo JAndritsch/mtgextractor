@@ -500,13 +500,5 @@ describe 'CardExtractor' do
       @card_extractor.extract_transformed_multiverse_id(html).should == '227084'
     end
   end
-
- describe '#extract_converted_mana_cost' do
-    it "should extract the card's converted mana cost from a Gatherer card web page" do
-      html = read_gatherer_page('kruin_outlaw.html')
-      @card_extractor.extract_converted_mana_cost(html).should == '3'
-    end
-  end
   
-
 end
