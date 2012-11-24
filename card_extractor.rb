@@ -174,10 +174,12 @@ class CardExtractor
           oracle_text.match(/\bflip\b/)
         # hack together the flipped version of the card html
         # and add it's oracle text to the unflipped oracle text
-        more_oracle_text = []
+        flipped_name_regex = /Card Name:.+Card Name:<\/div>\s+<div[^>]*>\s+([^<]+)/m
+        flipped_name = html.match(flipped_name_regex)[1]
+        more_oracle_text = [flipped_name]
+
         flipped_card_regex = /Card Name:.+Card Name:(.+?)Expansion:/m
         card_html = html.match(flipped_card_regex)[1]
-
         name = extract_name(html)
         card_html = "<span id=\"ctl00_ctl00_ctl00_MainContent_SubContent_SubContentHeader_subtitleDisplay\">#{name}</span> <div>Card Name:</div> <div> #{name}#{card_html}"
 

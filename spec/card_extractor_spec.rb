@@ -403,10 +403,10 @@ describe 'CardExtractor' do
       @card_extractor.extract_oracle_text(html).should == "Emrakul, the Aeons Torn can't be countered.\n\nWhen you cast Emrakul, take an extra turn after this one.\n\nFlying, protection from colored spells, annihilator 6\n\nWhen Emrakul is put into a graveyard from anywhere, its owner shuffles his or her graveyard into his or her library."
 
       html = read_gatherer_page("erayo_soratami_ascendant.html")
-      @card_extractor.extract_oracle_text(html).should == "Flying\n\nWhenever the fourth spell of a turn is cast, flip Erayo, Soratami Ascendant.\n\n----\n\nLegendary Enchantment\n\n1 / 1\n\nWhenever an opponent casts a spell for the first time in a turn, counter that spell."
+      @card_extractor.extract_oracle_text(html).should == "Flying\n\nWhenever the fourth spell of a turn is cast, flip Erayo, Soratami Ascendant.\n\n----\n\nErayo's Essence\n\nLegendary Enchantment\n\n1 / 1\n\nWhenever an opponent casts a spell for the first time in a turn, counter that spell."
 
       html = read_gatherer_page("erayo_essence.html")
-      @card_extractor.extract_oracle_text(html).should == "Flying\n\nWhenever the fourth spell of a turn is cast, flip Erayo, Soratami Ascendant.\n\n----\n\nLegendary Enchantment\n\n1 / 1\n\nWhenever an opponent casts a spell for the first time in a turn, counter that spell."
+      @card_extractor.extract_oracle_text(html).should == "Flying\n\nWhenever the fourth spell of a turn is cast, flip Erayo, Soratami Ascendant.\n\n----\n\nErayo's Essence\n\nLegendary Enchantment\n\n1 / 1\n\nWhenever an opponent casts a spell for the first time in a turn, counter that spell."
 
       html = read_gatherer_page("evil_twin.html")
       @card_extractor.extract_oracle_text(html).should == "You may have Evil Twin enter the battlefield as a copy of any creature on the battlefield except it gains \"{U}{B}, {tap}: Destroy target creature with the same name as this creature.\""
