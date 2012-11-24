@@ -8,7 +8,7 @@ require 'restclient'
 #   It can't read oracle texts that follow the pattern "Words {image}". It is only
 #   currently set up to handle "{image}: Words".
 #
-#   NOTE: Cards that "flip" (e.g., Akki Lavarunner, Kitsune Mystic, 
+#   NOTE: Cards that "flip" (e.g., Erayo, Soratami Ascendant, Kitsune Mystic, 
 #   Callow Jushi) are not handled consistently in Gatherer. We will not try to
 #   improve upon this tragedy; some things will therefore remain unsearchable.
 #
@@ -81,7 +81,8 @@ class CardExtractor
     #
     # Solution: identify multi-part cards, and pull the mana cost out simply for
     # these cards, because there will be only one mana cost block on the page.
-    # All other cards, allow for the possibility that it's a double-sided card.
+    # All other cards, allow for the possibility that it's a "flipping" (e.g.,
+    # Erayo, Soratami Ascendant) or double-sided (e.g., Kruin Outlaw) card.
     if multipart_card?(html)
       mana_cost = convert_mana_cost(html)
     else
