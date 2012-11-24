@@ -357,7 +357,104 @@ describe 'CardExtractor' do
 
   describe '#extract_oracle_text' do
     it "should extract a card's oracle text from a Gatherer card web page" do
-      true.should be_false
+      html = read_gatherer_page("fortress_crab.html")
+      @card_extractor.extract_oracle_text(html).should == ""
+
+      html = read_gatherer_page("forest.html")
+      @card_extractor.extract_oracle_text(html).should == "G"
+
+      html = read_gatherer_page("ancient_grudge.html")
+      @card_extractor.extract_oracle_text(html).should == "Destroy target artifact.\n\nFlashback {G} (You may cast this card from your graveyard for its flashback cost. Then exile it.)"
+
+      html = read_gatherer_page("arctic_flats.html")
+      @card_extractor.extract_oracle_text(html).should == "Arctic Flats enters the battlefield tapped.\n\n{tap}: Add {G} or {W} to your mana pool."
+
+      html = read_gatherer_page("ashenmoor_liege.html")
+      @card_extractor.extract_oracle_text(html).should == "Other black creatures you control get +1/+1.\n\nOther red creatures you control get +1/+1.\n\nWhenever Ashenmoor Liege becomes the target of a spell or ability an opponent controls, that player loses 4 life."
+
+      html = read_gatherer_page("blazing_torch.html")
+      @card_extractor.extract_oracle_text(html).should == "Equipped creature can't be blocked by Vampires or Zombies.\n\nEquipped creature has \"{tap}, Sacrifice Blazing Torch: Blazing Torch deals 2 damage to target creature or player.\"\n\nEquip {1} ({1}: Attach to target creature you control. Equip only as a sorcery.)"
+
+      html = read_gatherer_page("callow_jushi.html")
+      @card_extractor.extract_oracle_text(html).should == "Whenever you cast a Spirit or Arcane spell, you may put a ki counter on Callow Jushi.\n\nAt the beginning of the end step, if there are two or more ki counters on Callow Jushi, you may flip it.\n\n----\n\nJaraku the Interloper\n\nLegendary Creature — Spirit\n\n3/4\n\nRemove a ki counter from Jaraku the Interloper: Counter target spell unless its controller pays {2}."
+
+      html = read_gatherer_page("cover_of_winter.html")
+      @card_extractor.extract_oracle_text(html).should == "Cumulative upkeep {snow} (At the beginning of your upkeep, put an age counter on this permanent, then sacrifice it unless you pay its upkeep cost for each age counter on it. {snow} can be paid with one mana from a snow permanent.)\n\nIf a creature would deal combat damage to you and/or one or more creatures you control, prevent X of that damage, where X is the number of age counters on Cover of Winter.\n\n{snow}: Put an age counter on Cover of Winter."
+
+      html = read_gatherer_page("crimson_kobolds.html")
+      @card_extractor.extract_oracle_text(html).should == ""
+
+      html = read_gatherer_page("devils_play.html")
+      @card_extractor.extract_oracle_text(html).should == "Devil's Play deals X damage to target creature or player.\n\nFlashback {X}{R}{R}{R} (You may cast this card from your graveyard for its flashback cost. Then exile it.)"
+
+      html = read_gatherer_page("edric_spymaster_of_trest.html")
+      @card_extractor.extract_oracle_text(html).should == "Whenever a creature deals combat damage to one of your opponents, its controller may draw a card."
+
+      html = read_gatherer_page("elbrus_the_binding_blade.html")
+      @card_extractor.extract_oracle_text(html).should == "Equipped creature gets +1/+0.\n\nWhen equipped creature deals combat damage to a player, unattach Elbrus, the Binding Blade, then transform it.\n\nEquip {1}"
+
+      html = read_gatherer_page("withengar_unbound.html")
+      @card_extractor.extract_oracle_text(html).should == "Flying, intimidate, trample\n\nWhenever a player loses the game, put thirteen +1/+1 counters on Withengar Unbound."
+
+      html = read_gatherer_page("eldrazi_conscription.html")
+      @card_extractor.extract_oracle_text(html).should == "Enchant creature\n\nEnchanted creature gets +10/+10 and has trample and annihilator 2. (Whenever it attacks, defending player sacrifices two permanents.)"
+
+      html = read_gatherer_page("emrakul_the_aeons_torn.html")
+      @card_extractor.extract_oracle_text(html).should == "Emrakul, the Aeons Torn can't be countered.\n\nWhen you cast Emrakul, take an extra turn after this one.\n\nFlying, protection from colored spells, annihilator 6\n\nWhen Emrakul is put into a graveyard from anywhere, its owner shuffles his or her graveyard into his or her library."
+
+      html = read_gatherer_page("erayo_soratami_ascendant.html")
+      @card_extractor.extract_oracle_text(html).should == "Flying\n\nWhenever the fourth spell of a turn is cast, flip Erayo, Soratami Ascendant.\n\n----\n\nLegendary Enchantment\n\n1 / 1\n\nWhenever an opponent casts a spell for the first time in a turn, counter that spell."
+
+      html = read_gatherer_page("erayo_essence.html")
+      @card_extractor.extract_oracle_text(html).should == "Flying\n\nWhenever the fourth spell of a turn is cast, flip Erayo, Soratami Ascendant.\n\n----\n\nLegendary Enchantment\n\n1 / 1\n\nWhenever an opponent casts a spell for the first time in a turn, counter that spell."
+
+      html = read_gatherer_page("evil_twin.html")
+      @card_extractor.extract_oracle_text(html).should == "You may have Evil Twin enter the battlefield as a copy of any creature on the battlefield except it gains \"{U}{B}, {tap}: Destroy target creature with the same name as this creature.\""
+
+      html = read_gatherer_page("fire-field_ogre.html")
+      @card_extractor.extract_oracle_text(html).should == "First strike\n\nUnearth {U}{B}{R} ({U}{B}{R}: Return this card from your graveyard to the battlefield. It gains haste. Exile it at the beginning of the next end step or if it would leave the battlefield. Unearth only as a sorcery.)"
+
+      html = read_gatherer_page("fire_ice_fire.html")
+      @card_extractor.extract_oracle_text(html).should == "Fire deals 2 damage divided as you choose among one or two target creatures and/or players."
+
+      html = read_gatherer_page("fire_ice_ice.html")
+      @card_extractor.extract_oracle_text(html).should == "Tap target permanent.\n\nDraw a card."
+
+      html = read_gatherer_page("gavony_township.html")
+      @card_extractor.extract_oracle_text(html).should == "{tap}: Add {1} to your mana pool.\n\n{2}{G}{W}, {tap}: Put a +1/+1 counter on each creature you control."
+
+      html = read_gatherer_page("grimoire_of_the_dead.html")
+      @card_extractor.extract_oracle_text(html).should == "{1}, {tap}, Discard a card: Put a study counter on Grimoire of the Dead.\n\n{tap}, Remove three study counters from Grimoire of the Dead and sacrifice it: Put all creature cards from all graveyards onto the battlefield under your control. They're black Zombies in addition to their other colors and types."
+
+      html = read_gatherer_page("heartless_summoning.html")
+      @card_extractor.extract_oracle_text(html).should == "Creature spells you cast cost {2} less to cast.\n\nCreatures you control get -1/-1."
+
+      html = read_gatherer_page("hinterland_harbor.html")
+      @card_extractor.extract_oracle_text(html).should == "Hinterland Harbor enters the battlefield tapped unless you control a Forest or an Island.\n\n{tap}: Add {G} or {U} to your mana pool."
+
+      html = read_gatherer_page("kruin_outlaw.html")
+      @card_extractor.extract_oracle_text(html).should == "First strike\n\nAt the beginning of each upkeep, if no spells were cast last turn, transform Kruin Outlaw."
+
+      html = read_gatherer_page("terror_of_kruin_pass.html")
+      @card_extractor.extract_oracle_text(html).should == "Double strike\n\nEach Werewolf you control can't be blocked except by two or more creatures.\n\nAt the beginning of each upkeep, if a player cast two or more spells last turn, transform Terror of Kruin Pass."
+
+      html = read_gatherer_page("liliana_of_the_veil.html")
+      @card_extractor.extract_oracle_text(html).should == "+1: Each player discards a card.\n\n-2: Target player sacrifices a creature.\n\n-6: Separate all permanents target player controls into two piles. That player sacrifices all permanents in the pile of his or her choice."
+
+      html = read_gatherer_page("living_plane.html")
+      @card_extractor.extract_oracle_text(html).should == "All lands are 1/1 creatures that are still lands."
+
+      html = read_gatherer_page("llanowar_elves.html")
+      @card_extractor.extract_oracle_text(html).should == "{tap}: Add {G} to your mana pool."
+
+      html = read_gatherer_page("moltensteel_dragon.html")
+      @card_extractor.extract_oracle_text(html).should == "({RP} can be paid with either {R} or 2 life.)\n\nFlying\n\n{RP}: Moltensteel Dragon gets +1/+0 until end of turn."
+
+      html = read_gatherer_page("skeletal_grimace.html")
+      @card_extractor.extract_oracle_text(html).should == "Enchant creature\n\nEnchanted creature gets +1/+1 and has \"{B}: Regenerate this creature.\""
+
+      html = read_gatherer_page("village_bell-ringer.html")
+      @card_extractor.extract_oracle_text(html).should == "Flash (You may cast this spell any time you could cast an instant.)\n\nWhen Village Bell-Ringer enters the battlefield, untap all creatures you control."
     end
   end
 
@@ -443,7 +540,7 @@ describe 'CardExtractor' do
 
       html = read_gatherer_page('ashenmoor_liege.html')
       @card_extractor.extract_color_indicator(html).should be_nil
-      
+
       html = read_gatherer_page('moltensteel_dragon.html')
       @card_extractor.extract_color_indicator(html).should be_nil
 
@@ -451,7 +548,7 @@ describe 'CardExtractor' do
       @card_extractor.extract_color_indicator(html).should be_nil
 
       html = read_gatherer_page('elbrus_the_binding_blade.html')
-      @card_extractor.extract_color_indicator(html).should == "Black"
+      @card_extractor.extract_color_indicator(html).should be_nil
 
       html = read_gatherer_page('withengar_unbound.html')
       @card_extractor.extract_color_indicator(html).should == "Black"
@@ -516,6 +613,9 @@ describe 'CardExtractor' do
 
   describe '#extract_transformed_multiverse_id' do
     it "should extract the card's transformed multiverse id from a Gatherer card web page" do
+      html = read_gatherer_page('forest.html')
+      @card_extractor.extract_transformed_multiverse_id(html).should be_nil
+
       html = read_gatherer_page('kruin_outlaw.html')
       @card_extractor.extract_transformed_multiverse_id(html).should == '227090'
 

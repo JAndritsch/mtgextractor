@@ -134,7 +134,7 @@ class CardExtractor
       card_types_regex = /Types:<\/div>\s+<div[^>]*>\s+([a-zA-Z\s-—]+)<\/div>/
     else
       name = extract_name(html)
-      card_types_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?Types:<\/div>\s+<div class="value">\s+([a-zA-Z\s-—]+)<\/div>)/m
+      card_types_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?Types:<\/div>\s+<div[^>]*>\s+([a-zA-Z\s-—]+)<\/div>)/m
     end
     card_types = html.match(card_types_regex)[1]
     if card_types
@@ -145,9 +145,63 @@ class CardExtractor
   end
 
   def extract_oracle_text(html)
-    match_data = /<div class="cardtextbox">(?:<img src="\/Handlers\/Image\.ashx\?size=small&amp;name=\w+&amp;type=symbol" alt="\w+" align="absbottom" \/>)*:*([^>]+)<\/div>/
-    match = html.scan(match_data).flatten
-    match.length > 0 ? match.join("\n") : ""
+    # See remarks for #extract_mana_cost, above. Similar processing with respect
+    # to double-sided cards is necessary here as well.
+    card_html = html.gsub(/<div\s+class="cardtextbox"[^>]*><\/div>/, "")
+    oracle_text = ""
+
+    if !multipart_card?(html)
+      name = extract_name(html)
+      single_card_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{name}(.+?Expansion:)/m
+      card_html = html.match(single_card_regex)[1]
+    end
+
+    if card_html.match(/Card Text:/)
+      if card_html.match(/Flavor Text:/)
+        oracle_regex = /Card Text:<\/div>(.+?)Flavor Text:/m
+      else
+        oracle_regex = /Card Text:<\/div>(.+?)Expansion:/m
+      end
+      oracle_html = card_html.match(oracle_regex)[1]
+
+      oracle_text_regex = /<div.+?class="cardtextbox"[^>]*>(.+?)<\/div>/
+      oracle_text = oracle_html.scan(oracle_text_regex).flatten.join("\n\n")
+      oracle_text = oracle_text.gsub(/<\/?[ib]>|<\/div>/, '').strip
+
+      # "flipping" card with side-by-side Gatherer display?
+      if !extract_transformed_multiverse_id(html) and 
+          html.match(/Card Name:.+Card Name:/m) and
+          oracle_text.match(/\bflip\b/)
+        # hack together the flipped version of the card html
+        # and add it's oracle text to the unflipped oracle text
+        more_oracle_text = []
+        flipped_card_regex = /Card Name:.+Card Name:(.+?)Expansion:/m
+        card_html = html.match(flipped_card_regex)[1]
+
+        name = extract_name(html)
+        card_html = "<span id=\"ctl00_ctl00_ctl00_MainContent_SubContent_SubContentHeader_subtitleDisplay\">#{name}</span> <div>Card Name:</div> <div> #{name}#{card_html}"
+
+        more_oracle_text.push(extract_types(card_html).join(' '))
+
+        power = extract_power(card_html)
+        if power
+          toughness = extract_toughness(card_html)
+          more_oracle_text.push("#{power} / #{toughness}")
+        end
+
+        flipped_oracle_text = card_html.scan(oracle_text_regex).flatten.join("\n\n")
+        flipped_oracle_text = flipped_oracle_text.gsub(/<\/?[ib]>|<\/div>/, '').strip
+        more_oracle_text.push(flipped_oracle_text)
+
+        more_oracle_text = more_oracle_text.join("\n\n")
+        oracle_text += "\n\n----\n\n#{more_oracle_text}"
+      end
+      
+      mana_cost_regex = /<img src="\/Handlers\/Image\.ashx\?.*?name=([a-zA-Z0-9]+)[^>]*>/
+      oracle_text.gsub!(mana_cost_regex, '{\1}')
+    end
+
+    oracle_text
   end
 
   def extract_printed_text(html)
@@ -175,6 +229,12 @@ class CardExtractor
   end
 
   def extract_color_indicator(html)
+    if !multipart_card?(html)
+      name = extract_name(html)
+      single_card_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{name}(.+?Expansion:)/m
+      html = html.match(single_card_regex)[1]
+    end
+
     match_data = /Color Indicator:<\/div>\s+<div[^>]*>\s+(\w+)/
     match = html.match(match_data)
     match ? match[1] : nil
