@@ -24,22 +24,24 @@ class CardExtractor
   def get_card_details
     response = RestClient.get(@url)
     card_details = {}
-    card_details['gatherer_url']     = @url
-    card_details['multiverse_id']    = extract_multiverse_id(@url)
-    card_details['image_url']        = build_image_url(card_details['multiverse_id'])
+    card_details['gatherer_url']         = @url
+    card_details['multiverse_id']        = extract_multiverse_id(@url)
+    card_details['image_url']            = build_image_url(card_details['multiverse_id'])
 
-    card_details['expansion']        = extract_expansion(response)
-    card_details['name']             = extract_name(response)
-    card_details['mana_cost']        = extract_mana_cost(response)
-    card_details['converted_cost']   = extract_converted_mana_cost(response)
-    card_details['types']            = extract_types(response)
-    card_details['oracle_text']      = extract_oracle_text(response)
-    card_details['power']            = extract_power(response)
-    card_details['toughness']        = extract_toughness(response)
-    card_details['loyalty']          = extract_loyalty(response)
-    card_details['rarity']           = extract_rarity(response)
-    card_details['colors']           = determine_colors(response)
-    card_details['transformed_id']   = extract_transformed_multiverse_id(response)
+    card_details['expansion']            = extract_expansion(response)
+    card_details['expansion_symbol_url'] = extract_expansion_symbol_url(response)
+
+    card_details['name']                 = extract_name(response)
+    card_details['mana_cost']            = extract_mana_cost(response)
+    card_details['converted_cost']       = extract_converted_mana_cost(response)
+    card_details['types']                = extract_types(response)
+    card_details['oracle_text']          = extract_oracle_text(response)
+    card_details['power']                = extract_power(response)
+    card_details['toughness']            = extract_toughness(response)
+    card_details['loyalty']              = extract_loyalty(response)
+    card_details['rarity']               = extract_rarity(response)
+    card_details['colors']               = determine_colors(response)
+    card_details['transformed_id']       = extract_transformed_multiverse_id(response)
 
     card_details
   end
@@ -55,6 +57,12 @@ class CardExtractor
   def extract_expansion(html)
     expansion_regex = /<div id="[^"]+?_currentSetSymbol">.+?<a href="\/Pages\/Search\/Default.aspx\?action=advanced&amp;set=[^"]+">([^<]+)/m
     html.match(expansion_regex)[1]
+  end
+
+  def extract_expansion_symbol_url(html)
+    expansion_regex = /<div id="[^"]+?_currentSetSymbol">.+?<img .*?src="[^?]+\?([^"]+)/m
+    qstring = html.match(expansion_regex)[1].gsub(/&amp;/, "&")
+    "http://gatherer.wizards.com/Handlers/Image.ashx?#{qstring}"
   end
 
   def extract_name(html)
