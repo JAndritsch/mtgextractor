@@ -131,7 +131,7 @@ class CardExtractor
   def extract_types(html)
     html = html.force_encoding("utf-8")
     if multipart_card?(html)
-      card_types_regex = /Types:<\/div>\s+<div class="value">\s+([a-zA-Z\s-—]+)<\/div>/
+      card_types_regex = /Types:<\/div>\s+<div[^>]*>\s+([a-zA-Z\s-—]+)<\/div>/
     else
       name = extract_name(html)
       card_types_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?Types:<\/div>\s+<div class="value">\s+([a-zA-Z\s-—]+)<\/div>)/m
@@ -169,7 +169,7 @@ class CardExtractor
   end
 
   def extract_loyalty(html)
-    match_data = /Loyalty:<\/div>\s+<div class="value">\s+(\w+)<\/div>/
+    match_data = /Loyalty:<\/div>\s+<div[^>]*>\s+(\w+)<\/div>/
     match = html.match(match_data)
     match ? match[1] : nil
   end
@@ -204,7 +204,7 @@ class CardExtractor
   end
 
   def extract_rarity(html)
-    match_data = /Rarity:<\/div>\s+<div class="value">\s+<span class=["']\w+["']>([\w\s]*)/
+    match_data = /Rarity:<\/div>\s+<div[^>]*>\s+<span[^>]*>([\w\s]*)/
     match = html.match(match_data)[1]
   end
 
