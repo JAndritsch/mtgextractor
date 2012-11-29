@@ -15,13 +15,12 @@ namespace 'mtgextractor' do
     database_yaml = YAML::load(File.open("#{Rails.root}/config/database.yml"))[environment]
     ActiveRecord::Base.establish_connection(database_yaml)
 
-    set = ENV["SET"]
+    set_name = ENV["SET"]
+    set = MtgSet.new(:name => set_name).save
 
-    MtgSet.new(:name => set).save
-
-    puts "Processing set '#{set}'..."
-    card_urls = MTGExtractor::SetExtractor.new(set).get_card_detail_urls
-    puts "Found #{card_urls.count} cards in the set '#{set}'"
+    puts "Processing set '#{set_name}'..."
+    card_urls = MTGExtractor::SetExtractor.new(set_name).get_card_detail_urls
+    puts "Found #{card_urls.count} cards in the set '#{set_name}'"
 
     card_urls.each_with_index do |url, index|
       index += 1
