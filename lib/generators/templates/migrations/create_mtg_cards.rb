@@ -1,4 +1,4 @@
-class CreateMTGCards < ActiveRecord::Migration
+class CreateMtgCards < ActiveRecord::Migration
   def self.up
     create_table :mtg_cards do |t|
       t.string     :name

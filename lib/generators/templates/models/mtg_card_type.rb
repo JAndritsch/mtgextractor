@@ -1,2 +1,2 @@
-class MTGCardType < ActiveRecord::Base
+class MtgCardType < ActiveRecord::Base
 end

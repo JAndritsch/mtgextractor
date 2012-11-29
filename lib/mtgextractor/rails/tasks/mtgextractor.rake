@@ -17,7 +17,7 @@ namespace 'mtgextractor' do
 
     set = ENV["SET"]
 
-    MTGSet.new(:name => set).save
+    MtgSet.new(:name => set).save
 
     puts "Processing set '#{set}'..."
     card_urls = MTGExtractor::SetExtractor.new(set).get_card_detail_urls
@@ -27,7 +27,7 @@ namespace 'mtgextractor' do
       index += 1
       card_details = MTGExtractor::CardExtractor.new(url).get_card_details
       puts "#{index} / #{card_urls.count}: Processed card '#{card_details['name']}'"
-      card = MTGCard.new(:name => card_details['name'])
+      card = MtgCard.new(:name => card_details['name'])
       card.set = set
       card.save
     end
