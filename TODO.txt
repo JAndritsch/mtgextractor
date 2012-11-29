@@ -6,3 +6,8 @@ Bugs / Refactorings:
 
 - Create a method for extracting a card's printed text.
 
+- Consider the relationship between a card and set. A set has many cards. A card
+can belong to one or many sets. Do we want to have functionality that allows us 
+to ask for every set the card shows up in, or do we want to treat them as different
+cards that belong to only one set because they have different multiverse ids?
+
