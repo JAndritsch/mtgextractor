@@ -22,12 +22,19 @@ module MTGExtractor
       extract_card_detail_urls(response)
     end
 
-    private
-
     def extract_card_detail_urls(html)
       match_data = /Card\/Details\.aspx\?multiverseid=(\d+)/
         multiverse_ids = html.scan(match_data).flatten.uniq
       multiverse_ids.collect {|id| "http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=#{id}" }
+    end
+
+    def self.get_all_sets
+      response = RestClient.get('http://gatherer.wizards.com/Pages/Default.aspx')
+      set_select_regex = /<select name="ctl00\$ctl00\$MainContent\$Content\$SearchControls\$setAddText" id="ctl00_ctl00_MainContent_Content_SearchControls_setAddText">\s*(<option[^>]*>[^>]*<\/option>\s*)+<\/select>/
+      set_regex = /value="([^"]+)"/
+
+      set_select = response.match(set_select_regex)[0]
+      set_select.scan(set_regex).flatten
     end
 
   end
