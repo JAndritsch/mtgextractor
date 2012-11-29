@@ -1,4 +1,4 @@
-class CreateMtgCardsSets < ActiveRecord::Migration
+class CreateMtgCardsMtgSets < ActiveRecord::Migration
   def self.up
     create_table :mtg_cards_mtg_sets do |t|
       t.references :mtg_set
