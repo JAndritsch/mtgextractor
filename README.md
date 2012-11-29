@@ -25,15 +25,16 @@ Run migrations:
 
     rake db:migrate
 
-Populate your database with card data from Gatherer (this will take a while):
-
-    rake mtgextractor:update_all_sets
-
 ## Updating your database
+
+Populate your database with all cards for every set from Gatherer (this will take a while):
+
+    RAILS_ENV=environment rake mtgextractor:update_all_sets
 
 When a new set comes out, you can simply update your database for just that one
 set. All you have to do is run a rake task and specify which set you want to
 update.
 
-    rake mtgextractor:update_set "Set Name"
+    RAILS_ENV=environment SET="Set name" rake mtgextractor:update_set
 
+Note: If you don't specify a RAILS_ENV, it will default to 'development'.
