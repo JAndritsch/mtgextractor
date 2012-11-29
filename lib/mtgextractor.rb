@@ -1,12 +1,8 @@
 require "card_extractor"
 require "set_extractor"
 
-if defined?(Rails)
-  require 'railtie'
-  require 'card'
-  require 'set'
-  require 'card_type'
-end
+require 'rails/railtie' if defined?(Rails)
+require 'rails/engine' if defined?(Rails)
 
 module MTGExtractor
 end
