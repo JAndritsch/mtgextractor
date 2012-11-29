@@ -18,7 +18,7 @@ Rails applications that use this gem will be able to
   - Have their own database of MTG cards and MTG-related information
   - Have automatically generated ActiveRecord models available to their application
   that allow them access to the data
-  - Have an simple way of updating their database when new cards or sets release
+  - Have a simple way to update their database when new cards or sets release
   via rake tasks.
 
 ## Installation
