@@ -16,7 +16,7 @@ namespace 'mtgextractor' do
     ActiveRecord::Base.establish_connection(database_yaml)
 
     set_name = ENV["SET"]
-    set = MtgSet.new(:name => set_name).save
+    set = MtgSet.find_or_create_by_name(:name => set_name)
 
     puts "Processing set '#{set_name}'..."
     card_urls = MTGExtractor::SetExtractor.new(set_name).get_card_detail_urls
