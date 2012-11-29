@@ -28,7 +28,7 @@ namespace 'mtgextractor' do
       card_details = MTGExtractor::CardExtractor.new(url).get_card_details
       puts "#{index} / #{card_urls.count}: Processed card '#{card_details['name']}'"
       card = MtgCard.new(:name => card_details['name'])
-      card.set = set
+      card.mtg_set_id = set.id
       card.save
     end
     
