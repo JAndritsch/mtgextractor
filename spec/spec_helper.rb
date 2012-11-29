@@ -1,4 +1,5 @@
-require './lib/card_extractor'
+# Includes everything
+require './lib/mtgextractor'
 
 include RSpec::Matchers
 
