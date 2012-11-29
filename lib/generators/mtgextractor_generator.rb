@@ -1,7 +1,7 @@
-require 'rails'
+require 'rails/generators'
 
 module MTGExtractor
-  class InstallGenerator < ::Rails::Generators::Base
+  class MTGExtractorGenerator < ::Rails::Generators::Base
     include Rails::Generators::Migration
     source_root File.expand_path('../templates', __FILE__)
 
@@ -15,7 +15,7 @@ module MTGExtractor
       @prev_migration_nr.to_s
     end
 
-    def copy_migrations
+    def create_migration_file
       migration_template "create_cards.rb", "db/migrate/create_cards.rb"
     end
 
