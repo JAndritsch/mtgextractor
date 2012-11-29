@@ -1,6 +1,7 @@
 require 'mtgextractor'
 require 'yaml'
 require "#{Rails.root}/app/models/card"
+require "#{Rails.root}/app/models/set"
 
 namespace 'mtgextractor' do
   desc 'Extracts every card in every set from Gatherer and saves it to the DB'
@@ -16,6 +17,8 @@ namespace 'mtgextractor' do
 
     set = ENV["SET"]
 
+    Set.new(:name => set).save
+
     puts "Processing set '#{set}'..."
     card_urls = MTGExtractor::SetExtractor.new(set).get_card_detail_urls
     puts "Found #{card_urls.count} cards in the set '#{set}'"
@@ -25,6 +28,7 @@ namespace 'mtgextractor' do
       card_details = MTGExtractor::CardExtractor.new(url).get_card_details
       puts "#{index} / #{card_urls.count}: Processed card '#{card_details['name']}'"
       card = Card.new(:name => card_details['name'])
+      card.set = set
       card.save
     end
     
