@@ -24,10 +24,6 @@ module MTGExtractor
       copy_file "card.rb", "app/models/card.rb"
     end
 
-    def install
-      create_migration_files
-      copy_card_classes
-    end
   end
 end
 
