@@ -10,18 +10,23 @@ applications.
 ## Installation
 
 Configure your Gemfile:
+
     gem 'mtgextractor'
 
 Install the gem:
+
     bundle
 
 Run the generator:
+
     rails g mtgextractor
 
 Run migrations:
+
     rake db:migrate
 
 Populate your database with card data from Gatherer (this will take a while):
+
     rake mtgextractor:update_all_sets
 
 ## Updating your database
