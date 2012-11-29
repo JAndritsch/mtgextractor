@@ -1,17 +1,11 @@
 # encoding: utf-8
 
-require_relative '../card_extractor'
-include RSpec::Matchers
+require 'spec_helper'
 
-SUPPORT_DIR = File.expand_path("support", File.dirname(__FILE__))
-def read_gatherer_page(filename)
-  File.open("#{SUPPORT_DIR}/#{filename}", "r") {|f| f.read }
-end
-
-describe 'CardExtractor' do
+describe MTGExtractor::CardExtractor do
   before :each do
     @url = "http://www.magicihavegathered.com"
-    @card_extractor = CardExtractor.new(@url)
+    @card_extractor = MTGExtractor::CardExtractor.new(@url)
   end
 
   describe '#get_card_details' do
