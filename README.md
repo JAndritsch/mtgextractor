@@ -15,7 +15,7 @@ Configure your Gemfile:
 
 Install the gem:
 
-    rails g mtgextractor:install
+    rails g mtgextractor
 
 Run migrations:
 
