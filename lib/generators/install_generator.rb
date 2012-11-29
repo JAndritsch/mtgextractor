@@ -18,6 +18,12 @@ module MTGExtractor
     def copy_migrations
       migration_template "create_cards.rb", "db/migrate/create_cards.rb"
     end
+
+    def copy_card_classes
+      copy_file "card.rb", "app/models/card.rb"
+      copy_file "set.rb", "app/models/set.rb"
+      copy_file "card_type.rb", "app/models/card_type.rb"
+    end
   end
 end
 
