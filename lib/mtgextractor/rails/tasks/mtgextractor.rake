@@ -20,7 +20,6 @@ namespace 'mtgextractor' do
     card_urls = MTGExtractor::SetExtractor.new(set).get_card_detail_urls
     puts "Found #{card_urls.count} cards in the set '#{set}'"
 
-    cards = []
     card_urls.each_with_index do |url, index|
       index += 1
       card_details = MTGExtractor::CardExtractor.new(url).get_card_details
