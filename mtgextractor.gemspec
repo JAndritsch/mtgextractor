@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "MTGExtractor"
   gem.require_paths = ["lib"]
-  gem.version       = MTGExtractor::VERSION
+  gem.version       = "0.0.1"
 
   gem.add_dependency "rest-client"
   gem.add_dependency "rspec"
