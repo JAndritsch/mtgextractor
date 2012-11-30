@@ -44,6 +44,7 @@ module MTGExtractor
       card_details['colors']               = determine_colors(response)
       card_details['transformed_id']       = extract_transformed_multiverse_id(response)
 
+      card_details['page_html']            = response 
       card_details
     end
 

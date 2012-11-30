@@ -40,39 +40,57 @@ def process_set(set_name)
 
   card_urls.each_with_index do |url, index|
     index += 1
-    card_details = MTGExtractor::CardExtractor.new(url).get_card_details
+    extractor = MTGExtractor::CardExtractor.new(url)
+    card_details = extractor.get_card_details
+    html = card_details['page_html']
+    create_card(card_details)
 
-    # Create/find and collect types
-    types = []
-    type_names = card_details['types']
-    type_names.each do |type|
-      types << MtgType.find_or_create_by_name(type)
+    # If the card is a multipart card, we need to create its other 'part' as well.
+    # Because they share the same multiverse_id, we have to add the &part parameter
+    # to grab its other part.
+    if extractor.multipart_card?(html)
+      multiverse_id = card_details['multiverse_id']
+      regex = /\/Pages\/Card\/Details\.aspx\?part=([^&]+)/
+      part_param = html.match(regex)
+      url = "#{card_details['gatherer_url']}&part=#{part_param}"
+      multipart_card_data = MTGExtractor::CardExtractor.new(url).get_card_details
+      create_card(multipart_card_data)
+      puts "Created the other part (#{part_param})."
     end
-
-    # Storing mana cost as a string...bad idea?
-    mana_cost = card_details['mana_cost'] ? card_details['mana_cost'].join(" ") : nil
-
-    card = MtgCard.new(
-      :name => card_details['name'],
-      :gatherer_url => card_details['gatherer_url'],
-      :multiverse_id => card_details['multiverse_id'],
-      :image_url => card_details['image_url'],
-      :mana_cost => mana_cost,
-      :converted_cost => card_details['converted_cost'],
-      :oracle_text => card_details['oracle_text'],
-      :power => card_details['power'],
-      :toughness => card_details['toughness'],
-      :loyalty => card_details['loyalty'],
-      :rarity => card_details['rarity'],
-      :transformed_id => card_details['transformed_id'],
-      :colors => card_details['colors']
-    )
-
-    card.mtg_set_id = set.id
-    card.mtg_types = types
-    card.save
 
     puts "#{index} / #{card_urls.count}: Processed card '#{card_details['name']}'"
   end
 
+end
+
+def create_card(card_details)
+  # Create/find and collect types
+  types = []
+  type_names = card_details['types']
+  type_names.each do |type|
+    types << MtgType.find_or_create_by_name(type)
+  end
+
+  # Storing mana cost as a string...bad idea?
+  mana_cost = card_details['mana_cost'] ? card_details['mana_cost'].join(" ") : nil
+
+  card = MtgCard.new(
+    :name => card_details['name'],
+    :gatherer_url => card_details['gatherer_url'],
+    :multiverse_id => card_details['multiverse_id'],
+    :image_url => card_details['image_url'],
+    :mana_cost => mana_cost,
+    :converted_cost => card_details['converted_cost'],
+    :oracle_text => card_details['oracle_text'],
+    :power => card_details['power'],
+    :toughness => card_details['toughness'],
+    :loyalty => card_details['loyalty'],
+    :rarity => card_details['rarity'],
+    :transformed_id => card_details['transformed_id'],
+    :colors => card_details['colors']
+  )
+
+  card.mtg_set_id = set.id
+  card.mtg_types = types
+  card.save
 end
