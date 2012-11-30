@@ -1,8 +1,8 @@
 class CreateMtgCardTypes < ActiveRecord::Migration
   def self.up
     create_table :mtg_card_types do |t|
-      t.references :mtg_cards
-      t.references :mtg_types
+      t.references :mtg_card
+      t.references :mtg_type
       t.timestamps
     end
   end
