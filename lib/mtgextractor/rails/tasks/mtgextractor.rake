@@ -2,6 +2,7 @@ require 'mtgextractor'
 require 'yaml'
 require "#{Rails.root}/app/models/mtg_card"
 require "#{Rails.root}/app/models/mtg_set"
+require "#{Rails.root}/app/models/mtg_type"
 
 namespace 'mtgextractor' do
   desc 'Extracts every card in every set from Gatherer and saves it to the DB'
@@ -15,6 +16,7 @@ namespace 'mtgextractor' do
     database_yaml = YAML::load(File.open("#{Rails.root}/config/database.yml"))[environment]
     ActiveRecord::Base.establish_connection(database_yaml)
 
+    # Create or find set
     set_name = ENV["SET"]
     set = MtgSet.find_or_create_by_name(:name => set_name)
 
@@ -25,10 +27,21 @@ namespace 'mtgextractor' do
     card_urls.each_with_index do |url, index|
       index += 1
       card_details = MTGExtractor::CardExtractor.new(url).get_card_details
-      puts "#{index} / #{card_urls.count}: Processed card '#{card_details['name']}'"
+
+      # Create/find and collect types
+      types = []
+      type_names = card_details['types']
+      type_names.each do |type|
+        types << MtgType.find_or_create_by_name(type)
+      end
+      
+      # Create card
       card = MtgCard.new(:name => card_details['name'])
       card.mtg_set_id = set.id
+      card.mtg_types = types
       card.save
+
+      puts "#{index} / #{card_urls.count}: Processed card '#{card_details['name']}'"
     end
     
   end

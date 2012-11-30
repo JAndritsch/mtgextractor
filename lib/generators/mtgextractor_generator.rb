@@ -20,6 +20,7 @@ module MTGExtractor
       copy_file "models/mtg_card.rb", "app/models/mtg_card.rb"
       copy_file "models/mtg_set.rb", "app/models/mtg_set.rb"
       copy_file "models/mtg_type.rb", "app/models/mtg_type.rb"
+      copy_file "models/mtg_card_mtg_type.rb", "app/models/mtg_card_mtg_type.rb"
     end
 
     def create_migration_files
