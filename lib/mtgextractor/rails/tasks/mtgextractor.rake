@@ -8,6 +8,10 @@ require "#{Rails.root}/app/models/mtg_card_type"
 namespace 'mtgextractor' do
   desc 'Extracts every card in every set from Gatherer and saves it to the DB'
   task :update_all_sets do
+    environment = ENV["RAILS_ENV"] || "development"
+    database_yaml = YAML::load(File.open("#{Rails.root}/config/database.yml"))[environment]
+    ActiveRecord::Base.establish_connection(database_yaml)
+
     all_sets = MTGExtractor::SetExtractor.get_all_sets
     all_sets.each do |set|
       process_set(set)
