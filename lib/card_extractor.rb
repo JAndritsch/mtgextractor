@@ -257,11 +257,11 @@ module MTGExtractor
 
       indicator = extract_color_indicator(html)
       if indicator
-        card_colors = [indicator_to_color[indicator]]
+        card_colors = indicator_to_color[indicator]
       elsif match && match.length > 0
-        card_colors = match.flatten.uniq
+        card_colors = match.flatten.uniq.join
       else
-        card_colors = ['colorless']
+        card_colors = ''
       end
       card_colors
     end

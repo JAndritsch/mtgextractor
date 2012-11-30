@@ -552,31 +552,31 @@ describe MTGExtractor::CardExtractor do
   describe '#determine_colors' do
     it "should determine the card's colors from a Gatherer card web page" do
       html = read_gatherer_page('blazing_torch.html')
-      @card_extractor.determine_colors(html).should == ["colorless"]
+      @card_extractor.determine_colors(html).should == ""
 
       html = read_gatherer_page('crimson_kobolds.html')
-      @card_extractor.determine_colors(html).should =~ ["R"]
+      @card_extractor.determine_colors(html).should == "R"
 
       html = read_gatherer_page('edric_spymaster_of_trest.html')
-      @card_extractor.determine_colors(html).should == ["G", "U"]
+      @card_extractor.determine_colors(html).should == "GU"
 
       html = read_gatherer_page('emrakul_the_aeons_torn.html')
-      @card_extractor.determine_colors(html).should == ["colorless"]
+      @card_extractor.determine_colors(html).should == "" 
 
       html = read_gatherer_page('hinterland_harbor.html')
-      @card_extractor.determine_colors(html).should == ["colorless"]
+      @card_extractor.determine_colors(html).should == ""
 
       html = read_gatherer_page('fire_ice_fire.html')
-      @card_extractor.determine_colors(html).should == ["R"]
+      @card_extractor.determine_colors(html).should == "R"
 
       html = read_gatherer_page('fire_ice_ice.html')
-      @card_extractor.determine_colors(html).should == ["U"]
+      @card_extractor.determine_colors(html).should == "U"
 
       html = read_gatherer_page('ashenmoor_liege.html')
-      @card_extractor.determine_colors(html).should == ["B", "R"]
+      @card_extractor.determine_colors(html).should == "BR"
 
       html = read_gatherer_page('moltensteel_dragon.html')
-      @card_extractor.determine_colors(html).should == ["R"]
+      @card_extractor.determine_colors(html).should == "R"
     end
   end
 
