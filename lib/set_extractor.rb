@@ -24,7 +24,7 @@ module MTGExtractor
 
     def extract_card_detail_urls(html)
       match_data = /Card\/Details\.aspx\?multiverseid=(\d+)/
-        multiverse_ids = html.scan(match_data).flatten.uniq
+      multiverse_ids = html.scan(match_data).flatten.uniq
       multiverse_ids.collect {|id| "http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=#{id}" }
     end
 
