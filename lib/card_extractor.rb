@@ -23,7 +23,7 @@ module MTGExtractor
     end
 
     def get_card_details
-      response = RestClient.get(@url)
+      response = RestClient.get(@url).force_encoding("utf-8")
       card_details = {}
       card_details['gatherer_url']         = @url
       card_details['multiverse_id']        = extract_multiverse_id(@url)
@@ -130,7 +130,6 @@ module MTGExtractor
     end
 
     def extract_types(html)
-      html = html.force_encoding("utf-8")
       if multipart_card?(html)
         card_types_regex = /Types:<\/div>\s+<div[^>]*>\s+([^>]+)<\/div>/
       else
