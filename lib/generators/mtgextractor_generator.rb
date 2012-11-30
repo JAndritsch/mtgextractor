@@ -25,6 +25,7 @@ module MTGExtractor
     def create_migration_files
       migration_template "migrations/create_mtg_cards.rb", "db/migrate/create_mtg_cards.rb"
       migration_template "migrations/create_mtg_sets.rb", "db/migrate/create_mtg_sets.rb"
+      migration_template "migrations/create_mtg_types.rb", "db/migrate/create_mtg_types.rb"
       migration_template "migrations/create_mtg_cards_mtg_types.rb", "db/migrate/create_mtg_cards_mtg_types.rb"
     end
 
