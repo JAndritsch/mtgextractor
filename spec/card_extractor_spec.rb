@@ -346,6 +346,9 @@ describe MTGExtractor::CardExtractor do
 
       html = read_gatherer_page('liliana_of_the_veil.html')
       @card_extractor.extract_types(html).should == ['Planeswalker', 'Liliana']
+
+      html = read_gatherer_page('urzas_mine.html')
+      @card_extractor.extract_types(html).should == ['Land', "Urza's", 'Mine']
     end
   end
 
