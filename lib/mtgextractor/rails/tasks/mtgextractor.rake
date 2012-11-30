@@ -33,9 +33,10 @@ private
 def process_set(set_name)
   set = MtgSet.find_or_create_by_name(:name => set_name)
 
+  puts "====================================="
   puts "Processing set '#{set_name}'..."
+  puts "====================================="
   card_urls = MTGExtractor::SetExtractor.new(set_name).get_card_detail_urls
-  puts "Found #{card_urls.count} cards in the set '#{set_name}'"
 
   card_urls.each_with_index do |url, index|
     index += 1
