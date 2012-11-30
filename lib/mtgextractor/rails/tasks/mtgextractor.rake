@@ -3,6 +3,7 @@ require 'yaml'
 require "#{Rails.root}/app/models/mtg_card"
 require "#{Rails.root}/app/models/mtg_set"
 require "#{Rails.root}/app/models/mtg_type"
+require "#{Rails.root}/app/models/mtg_card_type"
 
 namespace 'mtgextractor' do
   desc 'Extracts every card in every set from Gatherer and saves it to the DB'
