@@ -132,10 +132,10 @@ module MTGExtractor
     def extract_types(html)
       html = html.force_encoding("utf-8")
       if multipart_card?(html)
-        card_types_regex = /Types:<\/div>\s+<div[^>]*>\s+([a-zA-Z\s-—]+)<\/div>/
+        card_types_regex = /Types:<\/div>\s+<div[^>]*>\s+([^>]+)<\/div>/
       else
         name = extract_name(html)
-        card_types_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?Types:<\/div>\s+<div[^>]*>\s+([a-zA-Z\s-—]+)<\/div>)/m
+        card_types_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?Types:<\/div>\s+<div[^>]*>\s+([^>]+)<\/div>)/m
       end
       card_types = html.match(card_types_regex)[1]
       if card_types
