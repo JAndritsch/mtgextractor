@@ -80,7 +80,7 @@ the following ActiveRecord models in your Rails application:
 
 More documentation on this in progress...
 
-# As a standalone gem
+## As a standalone gem
 
 MTGExtractor does not have to be used in a Rails application solely, however most
 of the work on this gem has been towards achieving that goal. If you wish to use
@@ -104,15 +104,15 @@ URL for a card details page. Example:
     card_extractor = MTGExtractor::CardExtractor.new(black_lotus_url)
     black_lotus_data = card_extractor.get_card_details
 
-# Support
+## Support
 
-## Ruby
+### Ruby
 
 MTGExtractor has been tested against the following Ruby versions:
 
   - 1.9.3
 
-## Rails
+### Rails
 
 MTGExtractor has been tested against the following Rails versions:
 
