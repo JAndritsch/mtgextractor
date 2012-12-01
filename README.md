@@ -73,9 +73,9 @@ Note: If you don't specify a RAILS_ENV, it will default to 'development'.
 After you run the generator and updated your database, you will have access to
 the following ActiveRecord models in your Rails application:
 
-  - MtgCard
-  - MtgSet
-  - MtgType
-  - MtgCardTypes
+  - **MtgCard**: Contains card attributes like name, mana cost, oracle text...
+  - **MtgSet**: A set, such as "Innistrad".
+  - **MtgType**: A card type, like "Land", "Instant", "Human", "Creature", etc...
+  - **MtgCardType**: An associative entity for the many-to-many relationship between MtgCard and MtgType.
 
 More documentation in progress...
