@@ -78,4 +78,42 @@ the following ActiveRecord models in your Rails application:
   - **MtgType**: A card type, like "Land", "Instant", "Human", "Creature", etc...
   - **MtgCardType**: An associative entity for the many-to-many relationship between MtgCard and MtgType.
 
-More documentation in progress...
+More documentation on this in progress...
+
+# As a standalone gem
+
+MTGExtractor does not have to be used in a Rails application solely, however most
+of the work on this gem has been towards achieving that goal. If you wish to use
+this gem as a standalone tool, you can simply make use of the classes that scrape
+the Gatherer web site and return data.
+
+Those classes are:
+
+  - **MTGExtractor::SetExtractor**: Returns a list of URLs for each card in provided
+  set. These URLs point to each individual card's details page. Example:
+
+    require 'mtgextractor'
+    set_extractor = MTGExtractor::SetExtractor.new("Innistrad")
+    all_cards_in_set = set_extractor.get_card_detail_urls
+
+  - **MTGExtractor::CardExtractor**: Returns a hash of card data when given the
+  URL for a card details page. Example:
+
+    require 'mtgextractor'
+    black_lotus_url = 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=600'
+    card_extractor = MTGExtractor::CardExtractor.new(black_lotus_url)
+    black_lotus_data = card_extractor.get_card_details
+
+# Support
+
+## Ruby
+
+MTGExtractor has been tested against the following Ruby versions:
+
+  - 1.9.3
+
+## Rails
+
+MTGExtractor has been tested against the following Rails versions:
+
+  - 3.2.6
