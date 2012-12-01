@@ -28,10 +28,6 @@ module MTGExtractor
       card_details['gatherer_url']         = @url
       card_details['multiverse_id']        = extract_multiverse_id(@url)
       card_details['image_url']            = build_image_url(card_details['multiverse_id'])
-
-      card_details['expansion']            = extract_expansion(response)
-      card_details['expansion_symbol_url'] = extract_expansion_symbol_url(response)
-
       card_details['name']                 = extract_name(response)
       card_details['mana_cost']            = extract_mana_cost(response)
       card_details['converted_cost']       = extract_converted_mana_cost(response)
@@ -56,20 +52,9 @@ module MTGExtractor
       "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=#{id}&type=card"
     end
 
-    def extract_expansion(html)
-      expansion_regex = /<div id="[^"]+?_currentSetSymbol">.+?<a href="\/Pages\/Search\/Default.aspx\?action=advanced&amp;set=[^"]+">([^<]+)/m
-      html.match(expansion_regex)[1]
-    end
-
-    def extract_expansion_symbol_url(html)
-      expansion_regex = /<div id="[^"]+?_currentSetSymbol">.+?<img .*?src="[^?]+\?([^"]+)/m
-      qstring = html.match(expansion_regex)[1].gsub(/&amp;/, "&")
-      "http://gatherer.wizards.com/Handlers/Image.ashx?#{qstring}"
-    end
-
     def extract_name(html)
       match_data = /<span id="ctl00_ctl00_ctl00_MainContent_SubContent_SubContentHeader_subtitleDisplay"[^>]*>([^<]+)/
-        html.match(match_data)[1]
+      html.match(match_data)[1]
     end
 
     def multipart_card?(html)
@@ -118,7 +103,7 @@ module MTGExtractor
       else
         name = extract_name(html)
         cmc_group_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?Converted Mana Cost:<\/div>\s+<div[^>]*>[^<]+/m
-          cmc_group = html.match(cmc_group_regex)
+        cmc_group = html.match(cmc_group_regex)
         cmc = cmc_group ? convert_converted_mana_cost(cmc_group[0]) : nil
       end
       cmc
@@ -126,7 +111,7 @@ module MTGExtractor
 
     def convert_converted_mana_cost(html)
       cmc_regex = /Converted Mana Cost:<\/div>\s+<div[^>]*>\s+(\d+)/
-        match = html.match(cmc_regex)
+      match = html.match(cmc_regex)
       match ? match[1] : "0"
     end
 

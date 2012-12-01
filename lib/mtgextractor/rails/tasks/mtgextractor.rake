@@ -43,7 +43,7 @@ def process_set(set_name)
     extractor = MTGExtractor::CardExtractor.new(url)
     card_details = extractor.get_card_details
     html = card_details['page_html']
-    create_card(card_details)
+    create_card(card_details, set)
 
     # If the card is a multipart card, we need to create its other 'part' as well.
     # Because they share the same multiverse_id, we have to add the &part parameter
@@ -51,11 +51,10 @@ def process_set(set_name)
     if extractor.multipart_card?(html)
       multiverse_id = card_details['multiverse_id']
       regex = /\/Pages\/Card\/Details\.aspx\?part=([^&]+)/
-      part_param = html.match(regex)
+      part_param = html.match(regex)[1]
       url = "#{card_details['gatherer_url']}&part=#{part_param}"
       multipart_card_data = MTGExtractor::CardExtractor.new(url).get_card_details
-      create_card(multipart_card_data)
-      puts "Created the other part (#{part_param})."
+      create_card(multipart_card_data, set)
     end
 
     puts "#{index} / #{card_urls.count}: Processed card '#{card_details['name']}'"
@@ -63,7 +62,7 @@ def process_set(set_name)
 
 end
 
-def create_card(card_details)
+def create_card(card_details, set)
   # Create/find and collect types
   types = []
   type_names = card_details['types']
