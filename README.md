@@ -41,9 +41,24 @@ Run migrations to create the tables:
 
 ## Updating your database
 
+### Getting all cards and all sets
+
 Populate your database with all cards for every set from Gatherer (this will take a while):
 
     RAILS_ENV=environment rake mtgextractor:update_all_sets
+
+Optionally, you can begin processing all sets starting from a different position in the list.
+The list of sets is dynamically acquired and sorted alphabetically. If you've already processed
+all sets starting from Alara Reborn (the first in the list) to Apocalypse, you can start this
+task over and begin the processing at the next set after Apocalypse (Arabian Nights). 
+
+To do this, you can run this command:
+
+    RAILS_ENV=environment START="Arabian Nights" rake mtgextractor:update_all_sets
+
+Doing this will ignore processing all sets that come before Arabian Nights in the list.
+
+### Processing one set at a time 
 
 When a new set comes out, you can simply update your database for just that one
 set. All you have to do is run a rake task and specify which set you want to
