@@ -70,23 +70,23 @@ def create_card(card_details, set)
     types << MtgType.find_or_create_by_name(type)
   end
 
-  # Storing mana cost as a string...bad idea?
+  # Storing mana cost as a string
   mana_cost = card_details['mana_cost'] ? card_details['mana_cost'].join(" ") : nil
 
   card = MtgCard.new(
-    :name => card_details['name'],
-    :gatherer_url => card_details['gatherer_url'],
-    :multiverse_id => card_details['multiverse_id'],
-    :image_url => card_details['image_url'],
-    :mana_cost => mana_cost,
+    :name           => card_details['name'],
+    :gatherer_url   => card_details['gatherer_url'],
+    :multiverse_id  => card_details['multiverse_id'],
+    :image_url      => card_details['image_url'],
+    :mana_cost      => mana_cost,
     :converted_cost => card_details['converted_cost'],
-    :oracle_text => card_details['oracle_text'],
-    :power => card_details['power'],
-    :toughness => card_details['toughness'],
-    :loyalty => card_details['loyalty'],
-    :rarity => card_details['rarity'],
+    :oracle_text    => card_details['oracle_text'],
+    :power          => card_details['power'],
+    :toughness      => card_details['toughness'],
+    :loyalty        => card_details['loyalty'],
+    :rarity         => card_details['rarity'],
     :transformed_id => card_details['transformed_id'],
-    :colors => card_details['colors']
+    :colors         => card_details['colors']
   )
 
   card.mtg_set_id = set.id
