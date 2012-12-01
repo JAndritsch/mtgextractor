@@ -13,7 +13,7 @@ This gem can help you create an entire database of every MTG card, set, and so o
 It works by scraping the Gatherer web site (http://gatherer.wizards.com) for
 card data.
 
-Rails applications that use this gem will be able to
+Rails applications that use this gem will be able to:
 
   - Have their own database of MTG cards and MTG-related information
   - Have automatically generated ActiveRecord models available to their application
