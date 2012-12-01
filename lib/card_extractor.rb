@@ -1,16 +1,9 @@
 # encoding: utf-8
 
+# NOTE: Cards that "flip" (e.g., Erayo, Soratami Ascendant, Kitsune Mystic, 
+# Callow Jushi) are not handled consistently in Gatherer. We will not try to
+# improve upon this tragedy; some things will therefore remain unsearchable.
 
-# Scrapes a Gatherer card details page and extracts card info
-# Issues:
-#
-#   It can't read oracle texts that follow the pattern "Words {image}". It is only
-#   currently set up to handle "{image}: Words".
-#
-#   NOTE: Cards that "flip" (e.g., Erayo, Soratami Ascendant, Kitsune Mystic, 
-#   Callow Jushi) are not handled consistently in Gatherer. We will not try to
-#   improve upon this tragedy; some things will therefore remain unsearchable.
-#
 
 module MTGExtractor
   class CardExtractor
