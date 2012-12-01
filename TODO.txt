@@ -1,17 +1,24 @@
 Features:
 ------------------------------------------------
 
+- Create a method for extracting a card's printed text. Add :printed_text to
+the MtgCard model. Update tests.
+
+- Create a method for extracting a card's author. Add :author to the MtgCard model.
+Update test.
+
+- Create a method for extracting a card's flavor text. Add :flavor_text to the MtgCard model.
+Update test.
+
+- Brainstorm possible solutions for retrieving a card images. Here's a couple:
+
+    - Downlod them during set processing (rake task) and store them locally. This
+    will of course require us to see if the Rails app is using the asset pipeline
+    or not.
+
+    - Hotlink the images directly from Gatherer. This could get scary later on,
+    however. 
+
+
 Bugs / Refactorings:
 ------------------------------------------------
-
-- Create a method for extracting a card's printed text.
-
-- Consider the relationship between a card and set. A set has many cards. A card
-can belong to one or many sets. Do we want to have functionality that allows us 
-to ask for every set the card shows up in, or do we want to treat them as different
-cards that belong to only one set because they have different multiverse ids?
-
-- The current method for obtaining all cards for a set does not work for dealing
-with multipart cards because they contain the same multiverse ids. We either need
-to rewrite how we're extracting set/card data, or find some way to process the
-other set by following the other part's link.
