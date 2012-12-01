@@ -67,3 +67,15 @@ update.
     RAILS_ENV=environment SET="Set name" rake mtgextractor:update_set
 
 Note: If you don't specify a RAILS_ENV, it will default to 'development'.
+
+## Accessing your card data
+
+After you run the generator and updated your database, you will have access to
+the following ActiveRecord models in your Rails application:
+
+  - MtgCard
+  - MtgSet
+  - MtgType
+  - MtgCardTypes
+
+More documentation in progress...
