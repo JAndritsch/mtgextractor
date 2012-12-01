@@ -89,15 +89,15 @@ the Gatherer web site and return data.
 
 Those classes are:
 
-  - **MTGExtractor::SetExtractor**: Returns a list of URLs for each card in provided
-  set. These URLs point to each individual card's details page. Example:
+**MTGExtractor::SetExtractor**: Returns a list of URLs for each card in provided
+set. These URLs point to each individual card's details page. Example:
 
     require 'mtgextractor'
     set_extractor = MTGExtractor::SetExtractor.new("Innistrad")
     all_cards_in_set = set_extractor.get_card_detail_urls
 
-  - **MTGExtractor::CardExtractor**: Returns a hash of card data when given the
-  URL for a card details page. Example:
+**MTGExtractor::CardExtractor**: Returns a hash of card data when given the
+URL for a card details page. Example:
 
     require 'mtgextractor'
     black_lotus_url = 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=600'
