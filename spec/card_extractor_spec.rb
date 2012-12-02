@@ -568,5 +568,13 @@ describe MTGExtractor::CardExtractor do
       @card_extractor.extract_transformed_multiverse_id(html).should == '227084'
     end
   end
+
+  describe '#extract_artist' do
+    it "should extract the card's artist from a Gatherer card web page" do
+      html = read_gatherer_page('forest.html')
+      @card_extractor.extract_artist(html).should_not be_nil
+    end
+
+  end
   
 end

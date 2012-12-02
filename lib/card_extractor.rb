@@ -32,6 +32,7 @@ module MTGExtractor
       card_details['rarity']               = extract_rarity(response)
       card_details['colors']               = determine_colors(response)
       card_details['transformed_id']       = extract_transformed_multiverse_id(response)
+      card_details['artist']               = extract_artist(response)
 
       card_details['page_html']            = response 
       card_details
@@ -76,7 +77,7 @@ module MTGExtractor
       else
         name = extract_name(html)
         mana_cost_group_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?Mana Cost:.+?<div[^>]*>(.+?)<\/div>/m
-          mana_cost_group = html.match(mana_cost_group_regex)
+        mana_cost_group = html.match(mana_cost_group_regex)
         mana_cost = mana_cost_group ? convert_mana_cost(mana_cost_group[1]) : nil
       end
       mana_cost
@@ -84,7 +85,7 @@ module MTGExtractor
 
     def convert_mana_cost(html)
       mana_cost_regex = /<img src="\/Handlers\/Image\.ashx\?size=medium&amp;name=([a-zA-Z0-9]+)&amp/
-        match = html.scan(mana_cost_regex).flatten
+      match = html.scan(mana_cost_regex).flatten
       match.length > 0 ? match : nil
     end
 
@@ -132,7 +133,7 @@ module MTGExtractor
       if !multipart_card?(html)
         name = extract_name(html)
         single_card_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{name}(.+?Expansion:)/m
-          card_html = html.match(single_card_regex)[1]
+        card_html = html.match(single_card_regex)[1]
       end
 
       if card_html.match(/Card Text:/)
@@ -144,7 +145,7 @@ module MTGExtractor
         oracle_html = card_html.match(oracle_regex)[1]
 
         oracle_text_regex = /<div.+?class="cardtextbox"[^>]*>(.+?)<\/div>/
-          oracle_text = oracle_html.scan(oracle_text_regex).flatten.join("\n\n")
+        oracle_text = oracle_html.scan(oracle_text_regex).flatten.join("\n\n")
         oracle_text = oracle_text.gsub(/<\/?[ib]>|<\/div>/, '').strip
 
         # "flipping" card with side-by-side Gatherer display?
@@ -179,7 +180,7 @@ module MTGExtractor
         end
 
         mana_cost_regex = /<img src="\/Handlers\/Image\.ashx\?.*?name=([a-zA-Z0-9]+)[^>]*>/
-          oracle_text.gsub!(mana_cost_regex, '{\1}')
+        oracle_text.gsub!(mana_cost_regex, '{\1}')
       end
 
       oracle_text
@@ -192,20 +193,20 @@ module MTGExtractor
     def extract_power(html)
       name = extract_name(html)
       creature_power_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?P\/T:<\/div>\s+<div class="value">\s+(\d+) \/ \d+)/m
-        match = html.match(creature_power_regex)
+      match = html.match(creature_power_regex)
       match ? match[1] : nil
     end
 
     def extract_toughness(html)
       name = extract_name(html)
       creature_toughness_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?P\/T:<\/div>\s+<div class="value">\s+\d+ \/ (\d+))/m
-        match = html.match(creature_toughness_regex)
+      match = html.match(creature_toughness_regex)
       match ? match[1] : nil
     end
 
     def extract_loyalty(html)
       match_data = /Loyalty:<\/div>\s+<div[^>]*>\s+(\w+)<\/div>/
-        match = html.match(match_data)
+      match = html.match(match_data)
       match ? match[1] : nil
     end
 
@@ -213,11 +214,11 @@ module MTGExtractor
       if !multipart_card?(html)
         name = extract_name(html)
         single_card_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{name}(.+?Expansion:)/m
-          html = html.match(single_card_regex)[1]
+        html = html.match(single_card_regex)[1]
       end
 
       match_data = /Color Indicator:<\/div>\s+<div[^>]*>\s+(\w+)/
-        match = html.match(match_data)
+      match = html.match(match_data)
       match ? match[1] : nil
     end
 
@@ -246,15 +247,19 @@ module MTGExtractor
 
     def extract_rarity(html)
       match_data = /Rarity:<\/div>\s+<div[^>]*>\s+<span[^>]*>([\w\s]*)/
-        match = html.match(match_data)[1]
+      match = html.match(match_data)[1]
     end
 
     def extract_transformed_multiverse_id(html)
       # Get the multiverse id of the transformed card, if one exists
       card_multiverse_id = extract_multiverse_id(html)
       multiverse_id_regex = /<img src="\.\.\/\.\.\/Handlers\/Image\.ashx\?multiverseid=(\d+)&amp;type=card/
-        multiverse_ids_on_page = html.scan(multiverse_id_regex).flatten.uniq
+      multiverse_ids_on_page = html.scan(multiverse_id_regex).flatten.uniq
       (multiverse_ids_on_page - [card_multiverse_id]).first
+    end
+
+    def extract_artist(html)
+      
     end
 
   end
