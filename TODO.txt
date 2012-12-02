@@ -1,11 +1,6 @@
 Features:
 ------------------------------------------------
 
-- It looks like printed text shows up on a different page, so we'll have to make
-another request to get that data. Seeing how this gem already makes a ton of get
-requests to Gatherer as is, perhaps it's best to ignore including printed text
-for now.
-
 - Create a method for extracting a card's flavor text. Add :flavor_text to the MtgCard model.
 Update test.
 
@@ -21,3 +16,20 @@ Update test.
 
 Bugs / Refactorings:
 ------------------------------------------------
+
+- We're currently relying on RestClient to handle our requests. While this will
+work fine for MRI, I don't think it works on JRuby. We might need to find another library
+to rely on that works for both.
+
+Alternatively, we could simply find one that works similarly to RestClient for JRuby,
+then create our own wrapper class that will use the appropriate version based
+on what version of Ruby is running this code. Example:
+
+class CustomClient
+  def self.get(url)
+    RestClient.get(url) if Ruby
+    SomeClient.get(url) if JRuby
+  end
+end
+
+Then just replace all calls to RestClient in our extractors with CustomClient.
