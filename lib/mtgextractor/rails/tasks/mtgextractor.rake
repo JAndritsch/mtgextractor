@@ -119,7 +119,7 @@ def card_already_exists?(card_data)
   # by oracle text
   if name.match(/\/\//)
     # It's a multipart card. We can only allow 2 of these multiverse_ids to exist
-    MtgCard.where(:name => name, :multiverse_id => multiverse_id).count == 2
+    MtgCard.where(:name => name, :multiverse_id => multiverse_id).count > 1
   else
     # Not a multipart card, only 1 copy is allowed
     MtgCard.where(:name => name, :multiverse_id => multiverse_id).count > 0

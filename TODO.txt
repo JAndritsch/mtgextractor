@@ -6,9 +6,6 @@ another request to get that data. Seeing how this gem already makes a ton of get
 requests to Gatherer as is, perhaps it's best to ignore including printed text
 for now.
 
-- Create a method for extracting a card's artist. Add :artist to the MtgCard model.
-Update test.
-
 - Create a method for extracting a card's flavor text. Add :flavor_text to the MtgCard model.
 Update test.
 
