@@ -409,12 +409,6 @@ describe MTGExtractor::CardExtractor do
     end
   end
 
-  describe '#extract_printed_text' do
-    it "should extract a card's printed text from a Gatherer card web page" do
-      true.should be_false
-    end
-  end
-
   describe '#extract_power' do
     it "should extract a creature's power from a Gatherer card web page" do
       html = read_gatherer_page('ashenmoor_liege.html')

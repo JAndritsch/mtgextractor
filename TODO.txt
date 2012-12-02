@@ -1,8 +1,10 @@
 Features:
 ------------------------------------------------
 
-- Create a method for extracting a card's printed text. Add :printed_text to
-the MtgCard model. Update tests.
+- It looks like printed text shows up on a different page, so we'll have to make
+another request to get that data. Seeing how this gem already makes a ton of get
+requests to Gatherer as is, perhaps it's best to ignore including printed text
+for now.
 
 - Create a method for extracting a card's author. Add :author to the MtgCard model.
 Update test.
