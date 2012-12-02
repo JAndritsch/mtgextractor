@@ -29,6 +29,7 @@ describe MTGExtractor::CardExtractor do
       @card_extractor.should_receive(:extract_rarity).with(@response)
       @card_extractor.should_receive(:determine_colors).with(@response)
       @card_extractor.should_receive(:extract_transformed_multiverse_id).with(@response)
+      @card_extractor.should_receive(:extract_artist).with(@response)
 
       @card_extractor.get_card_details
     end
@@ -572,7 +573,16 @@ describe MTGExtractor::CardExtractor do
   describe '#extract_artist' do
     it "should extract the card's artist from a Gatherer card web page" do
       html = read_gatherer_page('forest.html')
-      @card_extractor.extract_artist(html).should_not be_nil
+      @card_extractor.extract_artist(html).should == "James Paick"
+
+      html = read_gatherer_page('kruin_outlaw.html')
+      @card_extractor.extract_artist(html).should == "David Rapoza"
+
+      html = read_gatherer_page('terror_of_kruin_pass.html')
+      @card_extractor.extract_artist(html).should == "David Rapoza"
+
+      html = read_gatherer_page('elbrus_the_binding_blade.html')
+      @card_extractor.extract_artist(html).should == "Eric Deschamps"
     end
 
   end

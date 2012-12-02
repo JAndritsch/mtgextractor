@@ -259,7 +259,9 @@ module MTGExtractor
     end
 
     def extract_artist(html)
-      
+      artist_regex = /artist=\[%22([^%]+)%22\]/
+      match = html.match(artist_regex)
+      match ? match[1] : ""
     end
 
   end
