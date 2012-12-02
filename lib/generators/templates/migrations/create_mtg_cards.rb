@@ -14,6 +14,7 @@ class CreateMtgCards < ActiveRecord::Migration
       t.string     :rarity
       t.string     :transformed_id
       t.string     :colors
+      t.string     :artist
       t.references :mtg_set
       t.timestamps
     end

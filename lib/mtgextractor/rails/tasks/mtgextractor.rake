@@ -83,7 +83,8 @@ def card_details_hash(card_details)
     :loyalty        => card_details['loyalty'],
     :rarity         => card_details['rarity'],
     :transformed_id => card_details['transformed_id'],
-    :colors         => card_details['colors']
+    :colors         => card_details['colors'],
+    :artist         => card_details['artist']
   }
 end
 
