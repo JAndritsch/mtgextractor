@@ -13,6 +13,8 @@ Update test.
     - Hotlink the images directly from Gatherer. This could get scary later on,
     however. 
 
+- Pull down all set symbols and add :symbol to MtgSet (generators too)
+
 
 Bugs / Refactorings:
 ------------------------------------------------
