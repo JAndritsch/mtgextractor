@@ -49,8 +49,8 @@ Populate your database with all cards for every set from Gatherer (this will tak
 
 Optionally, you can begin processing all sets starting from a different position in the list.
 The list of sets is dynamically acquired and sorted alphabetically. If you've already processed
-all sets starting from Alara Reborn (the first in the list) to Apocalypse, you can start this
-task over and begin the processing at the next set after Apocalypse (Arabian Nights). 
+all sets starting from Alara Reborn to Apocalypse, you can start this task over and begin the 
+processing at the next set after Apocalypse (Arabian Nights). 
 
 To do this, you can run this command:
 
@@ -66,7 +66,7 @@ update.
 
     RAILS_ENV=environment SET="Set name" rake mtgextractor:update_set
 
-Note: If you don't specify a RAILS_ENV, it will default to 'development'.
+Note: If you don't specify RAILS_ENV, it will default to 'development'.
 
 ## Accessing your card data
 
