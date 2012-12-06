@@ -9,6 +9,12 @@ module MTGExtractor
   class CardExtractor
     require 'restclient'
 
+    if RUBY_PLATFORM == "java"
+      require 'java'
+    else
+      require 'iconv' if RUBY_VERSION.match(/1\.8\.\d+/)
+    end
+
     attr_accessor :url
 
     def initialize(url)
@@ -16,7 +22,9 @@ module MTGExtractor
     end
 
     def get_card_details
-      response = RestClient.get(@url).force_encoding("utf-8")
+      response = RestClient.get(@url)
+      response = convert_to_utf_8(response)
+
       card_details = {}
       card_details['gatherer_url']         = @url
       card_details['multiverse_id']        = extract_multiverse_id(@url)
@@ -264,6 +272,30 @@ module MTGExtractor
       match ? match[1] : ""
     end
 
+    private
+
+    # JRuby 1.7 (with MRI 1.9) or just MRI 1.9 can just use String#force_encoding
+    # JRuby 1.6 (with MRI 1.8.7) will use the Java method of conversion
+    # MRI (no JRuby) 1.8.7 needs Iconv
+    def convert_to_utf_8(response)
+      if RUBY_PLATFORM == "java"
+        if RUBY_VERSION.match(/1\.9\.\d+/)
+          response.force_encoding("utf-8")
+        else
+          bytes = response.to_java_bytes
+          converted_bytes = java.lang.String.new(bytes, "UTF-8").get_bytes("UTF-8")
+          String.from_java_bytes(converted_bytes)
+        end
+      else
+        if RUBY_VERSION.match(/1\.9\.\d+/)
+          response.force_encoding("utf-8")
+        else
+          ::Iconv.conv('UTF-8//IGNORE', 'UTF-8', response + ' ')[0..-2]
+        end
+      end
+    end
+
   end
+
 
 end

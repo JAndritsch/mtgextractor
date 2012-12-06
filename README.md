@@ -110,7 +110,13 @@ URL for a card details page. Example:
 
 MTGExtractor has been tested against the following Ruby versions:
 
-  - 1.9.3
+  - MRI 1.8.7+
+  - JRuby 1.6 with MRI 1.8.7
+  - JRuby 1.7 with MRI 1.9
+
+  **Note**: You will need Iconv for MRI 1.8.7
+
+    gem install iconv
 
 ### Rails
 
