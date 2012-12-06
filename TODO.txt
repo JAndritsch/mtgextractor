@@ -4,15 +4,6 @@ Features:
 - Create a method for extracting a card's flavor text. Add :flavor_text to the MtgCard model.
 Update test.
 
-- Brainstorm possible solutions for retrieving card images. Here's a couple:
-
-    - Downlod them during set processing (rake task) and store them locally. This
-    will of course require us to see if the Rails app is using the asset pipeline
-    or not.
-
-    - Hotlink the images directly from Gatherer. This could get scary later on,
-    however. 
-
 - Pull down all set symbols and add :symbol to MtgSet (generators too)
 
 
