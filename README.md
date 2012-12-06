@@ -114,7 +114,8 @@ MTGExtractor has been tested against the following Ruby versions:
   - JRuby 1.6 with MRI 1.8.7
   - JRuby 1.7 with MRI 1.9
 
-  **Note**: You will need Iconv for MRI 1.8.7
+**Note**: You will need Iconv for MRI 1.8.7
+
 
 ### Rails
 
