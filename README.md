@@ -116,8 +116,6 @@ MTGExtractor has been tested against the following Ruby versions:
 
   **Note**: You will need Iconv for MRI 1.8.7
 
-    gem install iconv
-
 ### Rails
 
 MTGExtractor has been tested against the following Rails versions:
