@@ -28,7 +28,7 @@ module MTGExtractor
       card_details = {}
       card_details['gatherer_url']         = @url
       card_details['multiverse_id']        = extract_multiverse_id(@url)
-      card_details['image_url']            = build_image_url(card_details['multiverse_id'])
+      card_details['gatherer_image_url']   = build_image_url(card_details['multiverse_id'])
       card_details['name']                 = extract_name(response)
       card_details['mana_cost']            = extract_mana_cost(response)
       card_details['converted_cost']       = extract_converted_mana_cost(response)

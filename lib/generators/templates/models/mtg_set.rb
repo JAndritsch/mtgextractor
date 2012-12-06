@@ -3,5 +3,10 @@ class MtgSet < ActiveRecord::Base
   validates :name, :uniqueness => true, :presence => true
 
   alias_method :cards, :mtg_cards
+
+  def folder_name
+    name.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+  end
+
 end
 

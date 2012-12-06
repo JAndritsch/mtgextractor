@@ -4,6 +4,7 @@ class CreateMtgCards < ActiveRecord::Migration
       t.string     :name
       t.string     :gatherer_url
       t.string     :multiverse_id
+      t.string     :gatherer_image_url
       t.string     :image_url
       t.string     :mana_cost
       t.string     :converted_cost

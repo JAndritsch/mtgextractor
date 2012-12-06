@@ -39,6 +39,13 @@ end
 def process_set(set_name)
   set = MtgSet.find_or_create_by_name(:name => set_name)
 
+  # Create the set folder. NEED to check for asset pipeline
+  folder_path = "#{Rails.root}/app/assets/images/#{set.folder_name}"
+  unless Dir.exists?(folder_path)
+    Dir.mkdir(folder_path, 0700)
+  end
+  
+
   puts "====================================="
   puts "Processing set '#{set_name}'..."
   puts "====================================="
@@ -71,20 +78,20 @@ end
 def card_details_hash(card_details)
   mana_cost = card_details['mana_cost'] ? card_details['mana_cost'].join(" ") : nil
   {
-    :name           => card_details['name'],
-    :gatherer_url   => card_details['gatherer_url'],
-    :multiverse_id  => card_details['multiverse_id'],
-    :image_url      => card_details['image_url'],
-    :mana_cost      => mana_cost,
-    :converted_cost => card_details['converted_cost'],
-    :oracle_text    => card_details['oracle_text'],
-    :power          => card_details['power'],
-    :toughness      => card_details['toughness'],
-    :loyalty        => card_details['loyalty'],
-    :rarity         => card_details['rarity'],
-    :transformed_id => card_details['transformed_id'],
-    :colors         => card_details['colors'],
-    :artist         => card_details['artist']
+    :name                 => card_details['name'],
+    :gatherer_url         => card_details['gatherer_url'],
+    :multiverse_id        => card_details['multiverse_id'],
+    :gatherer_image_url   => card_details['gatherer_image_url'],
+    :mana_cost            => mana_cost,
+    :converted_cost       => card_details['converted_cost'],
+    :oracle_text          => card_details['oracle_text'],
+    :power                => card_details['power'],
+    :toughness            => card_details['toughness'],
+    :loyalty              => card_details['loyalty'],
+    :rarity               => card_details['rarity'],
+    :transformed_id       => card_details['transformed_id'],
+    :colors               => card_details['colors'],
+    :artist               => card_details['artist']
   }
 end
 
@@ -103,7 +110,25 @@ def create_card(card_details, set)
   card = MtgCard.new(card_data)
   card.mtg_set_id = set.id
   card.mtg_types = types
+  card.image_url = download_card_image(card, set)
   card.save
+end
+
+def download_card_image(card, set)
+  image_data = RestClient.get(card.gatherer_image_url)
+  # Need to check for asset pipeline first, but this is just a test run
+  full_path = "#{Rails.root}/app/assets/images/#{set.folder_name}/#{card.multiverse_id}.jpg"
+  image_path = "/assets/#{set.folder_name}/#{card.multiverse_id}.jpg"
+
+  File.open(full_path, "wb") do |f|
+    f.write(image_data)
+  end
+
+  if File.exists?(full_path)
+    return image_path
+  else
+    return nil
+  end
 end
 
 def card_already_exists?(card_data)
