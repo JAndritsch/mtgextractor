@@ -7,5 +7,15 @@ Update test.
 - Pull down all set symbols and add :symbol to MtgSet (generators too)
 
 
+
 Bugs / Refactorings:
 ------------------------------------------------
+
+- Update processing of card images to check for the use of the Asset Pipeline
+and adjust where the images are stored based on the Rails app's config.
+
+- A new piece of card data, "Watermark", is currently being merged into a card's
+oracle text (for those that have a watermark) rather than as an individual attribute.
+(Example: http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=253532).
+
+We can either ignore that or extract Watermark out into a separate attribute.
