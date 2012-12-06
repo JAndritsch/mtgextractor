@@ -115,6 +115,9 @@ def create_card(card_details, set)
   end
 end
 
+def download_set_icons(set)
+end
+
 def download_card_image(card, set)
   image_data = RestClient.get(card.gatherer_image_url)
   # Need to check for asset pipeline first, but this is just a test run
