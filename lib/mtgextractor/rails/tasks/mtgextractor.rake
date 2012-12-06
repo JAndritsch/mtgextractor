@@ -110,24 +110,17 @@ def create_card(card_details, set)
   card = MtgCard.new(card_data)
   card.mtg_set_id = set.id
   card.mtg_types = types
-  card.image_url = download_card_image(card, set)
-  card.save
+  if card.save
+    download_card_image(card, set)
+  end
 end
 
 def download_card_image(card, set)
   image_data = RestClient.get(card.gatherer_image_url)
   # Need to check for asset pipeline first, but this is just a test run
   full_path = "#{Rails.root}/app/assets/images/#{set.folder_name}/#{card.multiverse_id}.jpg"
-  image_path = "/assets/#{set.folder_name}/#{card.multiverse_id}.jpg"
-
   File.open(full_path, "wb") do |f|
     f.write(image_data)
-  end
-
-  if File.exists?(full_path)
-    return image_path
-  else
-    return nil
   end
 end
 
