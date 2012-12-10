@@ -26,5 +26,9 @@ class MtgSet < ActiveRecord::Base
     "/assets/images/#{folder_name}/mythic_icon.jpg"
   end
 
+  def special_icon
+    "/assets/images/#{folder_name}/special_icon.jpg"
+  end
+
 end
 

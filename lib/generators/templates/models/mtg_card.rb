@@ -24,4 +24,9 @@ class MtgCard < ActiveRecord::Base
     "/assets/#{set.folder_name}/#{multiverse_id}.jpg"
   end
 
+  def set_sybmol
+    "/assets/#{set.folder_name}/#{slugify(rarity)}-icon.jpg"
+  end
+
 end
+
