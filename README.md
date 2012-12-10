@@ -68,6 +68,37 @@ update.
 
 Note: If you don't specify RAILS_ENV, it will default to 'development'.
 
+
+### Card and set images
+
+When processing a set, MTGExtractor will download all the card images and all icons for the
+set. The location of these images will depend on the version and configuration of your Rails 
+application.
+
+MTGExtractor supports the asset pipeline and will store your images in the following location
+if the asset pipeline is enabled:
+
+    app/assets/images/
+
+If you've configured the asset pipeline to use a different prefix other than "assets", MTGExtractor
+will use that prefix automatically.
+
+For applications that don't use the asset pipeline, you will find your card and set images here:
+
+    public/images/
+
+Once you've completed processing a set, you will have a directory structure similar to this:
+(Assuming the asset pipeline is enabled)
+
+    app/
+      assets/
+        images/
+          innistrad/
+            - 22343.jpg (The numbers match to a card's multiverse id)
+            - 39284.jpg
+            - common_icon.jpg (Used for displaying the card's icon)
+            - uncommon_icon.jpg
+   
 ## Accessing your card data
 
 After you run the generator and updated your database, you will have access to
