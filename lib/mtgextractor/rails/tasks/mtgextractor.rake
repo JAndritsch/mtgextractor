@@ -120,7 +120,7 @@ def create_card(card_details, set)
 end
 
 def download_set_icon(card, set, gatherer_symbol_url)
-  full_path = "#{Rails.root}#{card.set_symbol_url}"
+  full_path = "#{Rails.root}/app/assets/images/#{set.folder_name}/#{slugify(card.rarity)}_icon.jpg"
   unless File.exists?(full_path)
     image_data = RestClient.get(gatherer_symbol_url)
     File.open(full_path, "wb") do |f|
