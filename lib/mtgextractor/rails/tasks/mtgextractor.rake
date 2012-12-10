@@ -58,7 +58,7 @@ def process_set(set_name)
   puts "====================================="
   puts "Processing set '#{set_name}'..."
   puts "====================================="
-  card_urls = MTGExtractor::SetExtractor.new(set_name).get_card_detail_urls
+  card_urls = MTGExtractor::SetExtractor.new(set_name).get_card_urls
 
   card_urls.each_with_index do |url, index|
     index += 1

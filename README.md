@@ -94,7 +94,7 @@ set. These URLs point to each individual card's details page. Example:
 
     require 'mtgextractor'
     set_extractor = MTGExtractor::SetExtractor.new("Innistrad")
-    all_cards_in_set = set_extractor.get_card_detail_urls
+    all_cards_in_set = set_extractor.get_card_urls
 
 **MTGExtractor::CardExtractor**: Returns a hash of card data when given the
 URL for a card details page. Example:

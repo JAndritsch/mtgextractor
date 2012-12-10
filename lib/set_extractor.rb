@@ -16,13 +16,13 @@ module MTGExtractor
       @url  = URI.encode(CARDS_FOR_SET_URL.gsub("escaped_set_name", name))
     end
 
-    def get_card_detail_urls
+    def get_card_urls
       ids = []
       response = RestClient.get(@url)
-      extract_card_detail_urls(response)
+      extract_card_urls(response)
     end
 
-    def extract_card_detail_urls(html)
+    def extract_card_urls(html)
       match_data = /Card\/Details\.aspx\?multiverseid=(\d+)/
       multiverse_ids = html.scan(match_data).flatten.uniq
       multiverse_ids.collect {|id| "http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=#{id}" }
