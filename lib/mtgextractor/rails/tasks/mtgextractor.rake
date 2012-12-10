@@ -40,9 +40,11 @@ end
 
 def process_set(set_name)
   set = MtgSet.find_or_create_by_name(:name => set_name)
-
-  # Create the set folder. NEED to check for asset pipeline
-  folder_path = "#{Rails.root}/app/assets/images/#{set.folder_name}"
+  if using_asset_pipeline?
+    folder_path = "#{Rails.root}/app#{asset_pipeline_prefix}/images/#{set.folder_name}"
+  else
+    folder_path = "#{Rails.root}/public/images/#{set.folder_name}"
+  end
   unless Dir.exists?(folder_path)
     Dir.mkdir(folder_path, 0700)
   end
@@ -120,7 +122,11 @@ def create_card(card_details, set)
 end
 
 def download_set_icon(card, set, gatherer_symbol_url)
-  full_path = "#{Rails.root}/app/assets/images/#{set.folder_name}/#{slugify(card.rarity)}_icon.jpg"
+  if using_asset_pipeline?
+    full_path = "#{Rails.root}/app#{asset_pipeline_prefix}/images/#{set.folder_name}/#{slugify(card.rarity)}_icon.jpg"
+  else
+    full_path = "#{Rails.root}/public/images/#{set.folder_name}/#{slugify(card.rarity)}_icon.jpg"
+  end
   unless File.exists?(full_path)
     image_data = RestClient.get(gatherer_symbol_url)
     File.open(full_path, "wb") do |f|
@@ -131,8 +137,11 @@ end
 
 def download_card_image(card, set)
   image_data = RestClient.get(card.gatherer_image_url)
-  # Need to check for asset pipeline first, but this is just a test run
-  full_path = "#{Rails.root}/app/assets/images/#{set.folder_name}/#{card.multiverse_id}.jpg"
+  if using_asset_pipeline?
+    full_path = "#{Rails.root}/app#{asset_pipeline_prefix}/images/#{set.folder_name}/#{card.multiverse_id}.jpg"
+  else
+    full_path = "#{Rails.root}/public/images/#{set.folder_name}/#{card.multiverse_id}.jpg"
+  end
   File.open(full_path, "wb") do |f|
     f.write(image_data)
   end

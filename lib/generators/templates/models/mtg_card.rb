@@ -18,14 +18,14 @@ class MtgCard < ActiveRecord::Base
     end
   end
 
-  # This is the default location for your version of Rails. You can configure
-  # this however you want, but be sure you move the images first.
   def image_url
-    "/assets/#{set.folder_name}/#{multiverse_id}.jpg"
+    prefix = using_asset_pipeline? ? asset_pipeline_prefix : "/images"
+    "#{prefix}/#{set.folder_name}/#{multiverse_id}.jpg"
   end
 
   def set_symbol_url
-    "/assets/#{set.folder_name}/#{slugify(rarity)}_icon.jpg"
+    prefix = using_asset_pipeline? ? asset_pipeline_prefix : "/images"
+    "#{prefix}/#{set.folder_name}/#{slugify(rarity)}_icon.jpg"
   end
 
 end
