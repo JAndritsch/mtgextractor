@@ -31,5 +31,13 @@ class MtgSet < ActiveRecord::Base
     "/assets/#{folder_name}/special_icon.jpg"
   end
 
+  def promo_icon
+    "/assets/#{folder_name}/promo_icon.jpg"
+  end
+
+  def land_icon
+    "/assets/#{folder_name}/basic-land_icon.jpg"
+  end
+
 end
 
