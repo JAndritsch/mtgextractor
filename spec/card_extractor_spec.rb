@@ -26,6 +26,7 @@ describe MTGExtractor::CardExtractor do
       @card_extractor.should_receive(:extract_power).with(@response)
       @card_extractor.should_receive(:extract_toughness).with(@response)
       @card_extractor.should_receive(:extract_loyalty).with(@response)
+      @card_extractor.should_receive(:extract_expansion_symbol_url).with(@response)
       @card_extractor.should_receive(:extract_rarity).with(@response)
       @card_extractor.should_receive(:determine_colors).with(@response)
       @card_extractor.should_receive(:extract_transformed_multiverse_id).with(@response)
@@ -586,5 +587,29 @@ describe MTGExtractor::CardExtractor do
     end
 
   end
+
+  describe '#extract_expansion_symbol_url' do
+    it "should extract the url to a card's expansion symbol from a Gatherer card web page" do
+      html = read_gatherer_page('llanowar_elves.html')
+      @card_extractor.extract_expansion_symbol_url(html).should == 'http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set=2U&size=small&rarity=C'
+
+      html = read_gatherer_page('ashenmoor_liege.html')
+      @card_extractor.extract_expansion_symbol_url(html).should == 'http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set=SHM&size=small&rarity=R'
+
+      html = read_gatherer_page('fire_ice_fire.html')
+      @card_extractor.extract_expansion_symbol_url(html).should == 'http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set=AP&size=small&rarity=U'
+
+      html = read_gatherer_page('fire_ice_ice.html')
+      @card_extractor.extract_expansion_symbol_url(html).should == 'http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set=AP&size=small&rarity=U'
+
+      html = read_gatherer_page('elbrus_the_binding_blade.html')
+      @card_extractor.extract_expansion_symbol_url(html).should == 'http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set=DKA&size=small&rarity=M'
+
+      html = read_gatherer_page('withengar_unbound.html')
+      @card_extractor.extract_expansion_symbol_url(html).should == 'http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set=DKA&size=small&rarity=M'
+    end
+  end
+
+  
   
 end

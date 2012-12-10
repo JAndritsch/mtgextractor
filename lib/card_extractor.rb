@@ -41,6 +41,7 @@ module MTGExtractor
       card_details['colors']               = determine_colors(response)
       card_details['transformed_id']       = extract_transformed_multiverse_id(response)
       card_details['artist']               = extract_artist(response)
+      card_details['set_icon_url']         = extract_expansion_symbol_url(response)
 
       card_details['page_html']            = response 
       card_details
@@ -271,6 +272,13 @@ module MTGExtractor
       match = html.match(artist_regex)
       match ? match[1] : ""
     end
+
+    def extract_expansion_symbol_url(html)
+      expansion_regex = /<div id="[^"]+?_currentSetSymbol">.+?<img .*?src="[^?]+\?([^"]+)/m
+      qstring = html.match(expansion_regex)[1].gsub(/&amp;/, "&")
+      "http://gatherer.wizards.com/Handlers/Image.ashx?#{qstring}"
+    end
+    
 
     private
 
