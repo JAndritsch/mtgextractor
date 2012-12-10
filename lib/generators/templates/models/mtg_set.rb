@@ -1,4 +1,5 @@
 class MtgSet < ActiveRecord::Base
+  require 'mtg_helpers'
   include MtgHelpers
 
   has_many :mtg_cards
@@ -7,7 +8,7 @@ class MtgSet < ActiveRecord::Base
   alias_method :cards, :mtg_cards
 
   def folder_name
-    slufigy(name)
+    slugify(name)
   end
 
   def common_icon
@@ -23,7 +24,7 @@ class MtgSet < ActiveRecord::Base
   end
 
   def mythic_icon
-    "/assets/images/#{folder_name}/mythic_icon.jpg"
+    "/assets/images/#{folder_name}/mythic-rare_icon.jpg"
   end
 
   def special_icon

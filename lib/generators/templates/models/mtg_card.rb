@@ -1,5 +1,6 @@
 class MtgCard < ActiveRecord::Base
-  include MtgHelper
+  require 'mtg_helpers'
+  include MtgHelpers
 
   has_many :mtg_card_types
   has_many :mtg_types, :through => :mtg_card_types
@@ -10,7 +11,6 @@ class MtgCard < ActiveRecord::Base
 
   alias_method :types, :mtg_types
   alias_method :set, :mtg_set
-  alias_method :image_path, :image_url
 
   def transformed_side
     if transformed_id.present?
@@ -24,8 +24,8 @@ class MtgCard < ActiveRecord::Base
     "/assets/#{set.folder_name}/#{multiverse_id}.jpg"
   end
 
-  def set_sybmol
-    "/assets/#{set.folder_name}/#{slugify(rarity)}-icon.jpg"
+  def set_symbol_url
+    "/assets/#{set.folder_name}/#{slugify(rarity)}_icon.jpg"
   end
 
 end

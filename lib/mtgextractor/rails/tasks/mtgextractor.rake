@@ -4,6 +4,8 @@ require "#{Rails.root}/app/models/mtg_card"
 require "#{Rails.root}/app/models/mtg_set"
 require "#{Rails.root}/app/models/mtg_type"
 require "#{Rails.root}/app/models/mtg_card_type"
+require 'mtg_helpers'
+include MtgHelpers
 
 namespace 'mtgextractor' do
   desc 'Extracts every card in every set from Gatherer and saves it to the DB'
@@ -107,15 +109,24 @@ def create_card(card_details, set)
     types << MtgType.find_or_create_by_name(type)
   end
 
+
   card = MtgCard.new(card_data)
   card.mtg_set_id = set.id
   card.mtg_types = types
   if card.save
     download_card_image(card, set)
+    download_set_icon(card, set, card_details['set_icon_url'])
   end
 end
 
-def download_set_icons(set)
+def download_set_icon(card, set, gatherer_symbol_url)
+  full_path = "#{Rails.root}#{card.set_symbol_url}"
+  unless File.exists?(full_path)
+    image_data = RestClient.get(gatherer_symbol_url)
+    File.open(full_path, "wb") do |f|
+      f.write(image_data)
+    end
+  end
 end
 
 def download_card_image(card, set)
