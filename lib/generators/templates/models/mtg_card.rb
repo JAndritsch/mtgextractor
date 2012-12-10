@@ -1,4 +1,6 @@
 class MtgCard < ActiveRecord::Base
+  include MtgHelper
+
   has_many :mtg_card_types
   has_many :mtg_types, :through => :mtg_card_types
   belongs_to :mtg_set

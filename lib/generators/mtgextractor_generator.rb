@@ -23,6 +23,10 @@ module MTGExtractor
       copy_file "models/mtg_card_type.rb", "app/models/mtg_card_type.rb"
     end
 
+    def copy_helpers
+      copy_file "helpers/mtg_helpers.rb", "lib/mtg_helpers.rb"
+    end
+
     def create_migration_files
       migration_template "migrations/create_mtg_cards.rb", "db/migrate/create_mtg_cards.rb"
       migration_template "migrations/create_mtg_sets.rb", "db/migrate/create_mtg_sets.rb"

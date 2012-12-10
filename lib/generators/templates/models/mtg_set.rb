@@ -1,11 +1,13 @@
 class MtgSet < ActiveRecord::Base
+  include MtgHelpers
+
   has_many :mtg_cards
   validates :name, :uniqueness => true, :presence => true
 
   alias_method :cards, :mtg_cards
 
   def folder_name
-    name.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+    slufigy(name)
   end
 
   def common_icon
