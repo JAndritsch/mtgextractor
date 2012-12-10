@@ -45,7 +45,7 @@ def process_set(set_name)
   else
     public_images_folder = "#{Rails.root}/public/images"
     unless Dir.exists?(public_images_folder)
-      Dir.mkdir(folder_path, 0700)
+      Dir.mkdir(public_images_folder, 0700)
     end
     folder_path = "#{public_images_folder}/#{set.folder_name}"
   end
