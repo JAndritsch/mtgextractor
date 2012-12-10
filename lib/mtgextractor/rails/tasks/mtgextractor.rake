@@ -43,8 +43,13 @@ def process_set(set_name)
   if using_asset_pipeline?
     folder_path = "#{Rails.root}/app#{asset_pipeline_prefix}/images/#{set.folder_name}"
   else
-    folder_path = "#{Rails.root}/public/images/#{set.folder_name}"
+    public_images_folder = "#{Rails.root}/public/images"
+    unless Dir.exists?(public_images_folder)
+      Dir.mkdir(folder_path, 0700)
+    end
+    folder_path = "#{public_images_folder}/#{set.folder_name}"
   end
+
   unless Dir.exists?(folder_path)
     Dir.mkdir(folder_path, 0700)
   end
