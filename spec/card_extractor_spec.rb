@@ -105,7 +105,7 @@ describe MTGExtractor::CardExtractor do
     context 'normal card' do
       it "should determine a card's mana cost from a Gatherer card web page" do
         @card_extractor.card_details['page_html'] = read_gatherer_page('eldrazi_conscription.html')
-        @card_extractor.extract_mana_cost.should == ['8']
+        @card_extractor.extract_mana_cost.should == '{8}'
 
         @card_extractor.card_details['page_html'] = read_gatherer_page('forest.html')
         @card_extractor.extract_mana_cost.should be_nil
@@ -115,17 +115,17 @@ describe MTGExtractor::CardExtractor do
     context 'multi-part card' do
       it "should determine a card's mana cost from a Gatherer card web page" do
         @card_extractor.card_details['page_html'] = read_gatherer_page('fire_ice_fire.html')
-        @card_extractor.extract_mana_cost.should == ['1', 'R']
+        @card_extractor.extract_mana_cost.should == '{1}{R}'
 
         @card_extractor.card_details['page_html'] = read_gatherer_page('fire_ice_ice.html')
-        @card_extractor.extract_mana_cost.should == ['1', 'U']
+        @card_extractor.extract_mana_cost.should == '{1}{U}'
       end
     end
 
     context 'double-sided card' do
       it "should determine a card's mana cost from a Gatherer card web page" do
         @card_extractor.card_details['page_html'] = read_gatherer_page('kruin_outlaw.html')
-        @card_extractor.extract_mana_cost.should == ['1', 'R', 'R']
+        @card_extractor.extract_mana_cost.should == '{1}{R}{R}'
 
         @card_extractor.card_details['page_html'] = read_gatherer_page('terror_of_kruin_pass.html')
         @card_extractor.extract_mana_cost.should be_nil
@@ -136,37 +136,37 @@ describe MTGExtractor::CardExtractor do
   describe '#convert_mana_cost' do
     it "should convert mana cost html into a textual representation" do
       html = read_gatherer_page('ashenmoor_liege.html')
-      @card_extractor.convert_mana_cost(html).should == ["1", "BR", "BR", "BR"]
+      @card_extractor.convert_mana_cost(html).should == '{1}{BR}{BR}{BR}'
 
       html = read_gatherer_page('blazing_torch.html')
-      @card_extractor.convert_mana_cost(html).should == ["1"]
+      @card_extractor.convert_mana_cost(html).should == '{1}'
 
       html = read_gatherer_page('callow_jushi.html')
-      @card_extractor.convert_mana_cost(html).should == ["1", "U", "U"]
+      @card_extractor.convert_mana_cost(html).should == '{1}{U}{U}'
 
       html = read_gatherer_page('cover_of_winter.html')
-      @card_extractor.convert_mana_cost(html).should == ["2", "W"]
+      @card_extractor.convert_mana_cost(html).should == '{2}{W}'
 
       html = read_gatherer_page('crimson_kobolds.html')
-      @card_extractor.convert_mana_cost(html).should == ["0"]
+      @card_extractor.convert_mana_cost(html).should == '{0}'
 
       html = read_gatherer_page('devils_play.html')
-      @card_extractor.convert_mana_cost(html).should == ["X", "R"]
+      @card_extractor.convert_mana_cost(html).should == '{X}{R}'
 
       html = read_gatherer_page('edric_spymaster_of_trest.html')
-      @card_extractor.convert_mana_cost(html).should == ["1", "G", "U"]
+      @card_extractor.convert_mana_cost(html).should == '{1}{G}{U}'
 
       html = read_gatherer_page('emrakul_the_aeons_torn.html')
-      @card_extractor.convert_mana_cost(html).should == ["15"]
+      @card_extractor.convert_mana_cost(html).should == '{15}'
 
       html = read_gatherer_page('forest.html')
       @card_extractor.convert_mana_cost(html).should be_nil
 
       html = read_gatherer_page('liliana_of_the_veil.html')
-      @card_extractor.convert_mana_cost(html).should == ["1", "B", "B"]
+      @card_extractor.convert_mana_cost(html).should == '{1}{B}{B}'
 
       html = read_gatherer_page('moltensteel_dragon.html')
-      @card_extractor.convert_mana_cost(html).should == ["4", "RP", "RP"]
+      @card_extractor.convert_mana_cost(html).should == '{4}{RP}{RP}'
     end
   end
 

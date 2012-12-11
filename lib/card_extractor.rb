@@ -95,7 +95,7 @@ module MTGExtractor
     def convert_mana_cost(html)
       mana_cost_regex = /<img src="\/Handlers\/Image\.ashx\?size=medium&amp;name=([a-zA-Z0-9]+)&amp/
       match = html.scan(mana_cost_regex).flatten
-      match.length > 0 ? match : nil
+      match.length > 0 ? match.collect {|m| "{#{m}}"}.join('') : nil
     end
 
     def extract_converted_mana_cost
@@ -246,7 +246,7 @@ module MTGExtractor
       }
 
       mana_cost = extract_mana_cost
-      match = mana_cost.join("").scan(/[ubrgw]/i) if mana_cost
+      match = mana_cost.scan(/[ubrgw]/i) if mana_cost
 
       indicator = extract_color_indicator
       if indicator

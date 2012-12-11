@@ -85,7 +85,7 @@ def process_set(set_name)
 end
 
 def card_details_hash(card_details)
-  mana_cost = card_details['mana_cost'] ? card_details['mana_cost'].join(" ") : nil
+  mana_cost = card_details['mana_cost'] ? card_details['mana_cost'] : nil
   {
     :name                 => card_details['name'],
     :gatherer_url         => card_details['gatherer_url'],
