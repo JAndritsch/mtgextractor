@@ -381,6 +381,10 @@ describe MTGExtractor::CardExtractor do
       @card_extractor.card_details['page_html'] = read_gatherer_page("moltensteel_dragon.html")
       @card_extractor.extract_oracle_text.should == "({RP} can be paid with either {R} or 2 life.)\n\nFlying\n\n{RP}: Moltensteel Dragon gets +1/+0 until end of turn."
 
+      @card_extractor.card_details['multiverse_id'] = '253532'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("rakdos_lord_of_riots.html")
+      @card_extractor.extract_oracle_text.should == "You can't cast Rakdos, Lord of Riots unless an opponent lost life this turn.\n\nFlying, trample\n\nCreature spells you cast cost {1} less to cast for each 1 life your opponents have lost this turn."
+
       @card_extractor.card_details['multiverse_id'] = '220387'
       @card_extractor.card_details['page_html'] = read_gatherer_page("skeletal_grimace.html")
       @card_extractor.extract_oracle_text.should == "Enchant creature\n\nEnchanted creature gets +1/+1 and has \"{B}: Regenerate this creature.\""

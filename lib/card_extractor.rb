@@ -149,6 +149,10 @@ module MTGExtractor
       if card_html.match(/Card Text:/)
         if card_html.match(/Flavor Text:/)
           oracle_regex = /Card Text:<\/div>(.+?)Flavor Text:/m
+        elsif card_html.match(/Watermark:/)
+          oracle_regex = /Card Text:<\/div>(.+?)Watermark:/m
+        elsif card_html.match(/P\/T:/)
+          oracle_regex = /Card Text:<\/div>(.+?)P\/T:/m
         else
           oracle_regex = /Card Text:<\/div>(.+?)Expansion:/m
         end

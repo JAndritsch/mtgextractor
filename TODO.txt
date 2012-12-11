@@ -1,17 +1,12 @@
 Features:
 ------------------------------------------------
 
-- Create a method for extracting a card's flavor text. Add :flavor_text to the MtgCard model.
-Update test.
+- Extract car card's watermark into a separate attribute.
 
-Bugs / Refactorings:
-------------------------------------------------
+- Extract a card's flavor text into a separate attribute.
 
-- A new piece of card data, "Watermark", is currently being merged into a card's
-oracle text (for those that have a watermark) rather than as an individual attribute.
-(Example: http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=253532).
+Be sure to update rake tasks and model!
 
-We can either ignore that or extract Watermark out into a separate attribute.
 
 Misc:
 ------------------------------------------------
