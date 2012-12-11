@@ -284,7 +284,8 @@ module MTGExtractor
     end
 
     def extract_artist
-      artist_regex = /artist=\[%22([^%]+)%22\]/
+      name = extract_name
+      artist_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?artist=\[%22([^%]+)%22\])/m
       match = card_details['page_html'].match(artist_regex)
       match ? match[1] : ""
     end
