@@ -8,6 +8,7 @@ class CreateMtgCards < ActiveRecord::Migration
       t.string     :mana_cost
       t.string     :converted_cost
       t.string     :oracle_text
+      t.string     :mark
       t.string     :power
       t.string     :toughness
       t.string     :loyalty

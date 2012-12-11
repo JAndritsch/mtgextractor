@@ -34,6 +34,7 @@ module MTGExtractor
       @card_details['converted_cost']     = extract_converted_mana_cost
       @card_details['types']              = extract_types
       @card_details['oracle_text']        = extract_oracle_text
+      @card_details['mark']               = extract_watermark
       @card_details['power']              = extract_power
       @card_details['toughness']          = extract_toughness
       @card_details['loyalty']            = extract_loyalty
@@ -202,6 +203,13 @@ module MTGExtractor
 
     def extract_printed_text
       # TODO
+    end
+
+    def extract_watermark
+      name = extract_name
+      watermark_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?Watermark:<\/div>\s+<div class="value">\s+<div class="cardtextbox">(.+?)<\/div>)/m
+      match = card_details['page_html'].match(watermark_regex)
+      match ? match[1].gsub(/<\/?[ib]>|<\/div>/, '').strip : nil
     end
 
     def extract_power(html=nil)

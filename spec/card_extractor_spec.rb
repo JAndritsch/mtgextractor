@@ -32,6 +32,7 @@ describe MTGExtractor::CardExtractor do
       @card_extractor.should_receive(:extract_converted_mana_cost)
       @card_extractor.should_receive(:extract_types)
       @card_extractor.should_receive(:extract_oracle_text)
+      @card_extractor.should_receive(:extract_watermark)
       @card_extractor.should_receive(:extract_power)
       @card_extractor.should_receive(:extract_toughness)
       @card_extractor.should_receive(:extract_loyalty)
@@ -392,6 +393,22 @@ describe MTGExtractor::CardExtractor do
       @card_extractor.card_details['multiverse_id'] = '222923'
       @card_extractor.card_details['page_html'] = read_gatherer_page("village_bell-ringer.html")
       @card_extractor.extract_oracle_text.should == "Flash (You may cast this spell any time you could cast an instant.)\n\nWhen Village Bell-Ringer enters the battlefield, untap all creatures you control."
+    end
+  end
+
+  describe '#extract_watermark' do
+    it "should extract a card's watermark when present" do
+      @card_extractor.card_details['page_html'] = read_gatherer_page('forest.html')
+      @card_extractor.extract_watermark.should be_nil
+
+      @card_extractor.card_details['page_html'] = read_gatherer_page('kruin_outlaw.html')
+      @card_extractor.extract_watermark.should be_nil
+
+      @card_extractor.card_details['page_html'] = read_gatherer_page('terror_of_kruin_pass.html')
+      @card_extractor.extract_watermark.should be_nil
+
+      @card_extractor.card_details['page_html'] = read_gatherer_page('rakdos_lord_of_riots.html')
+      @card_extractor.extract_watermark.should == 'Rakdos'
     end
   end
 
