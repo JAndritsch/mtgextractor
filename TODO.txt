@@ -1,15 +1,7 @@
-Features:
-------------------------------------------------
-
-- Extract car card's watermark into a separate attribute.
-
-- Extract a card's flavor text into a separate attribute.
-
-Be sure to update rake tasks and model!
-
-
 Misc:
 ------------------------------------------------
+
+- Write rspec tests around lib/set_extractor.rb.
 
 - We want this gem to work with Rails 3.0 and up. We still need to test it out on these
 versions:
