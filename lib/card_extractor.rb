@@ -168,8 +168,8 @@ module MTGExtractor
 
         # "flipping" card with side-by-side Gatherer display?
         if !extract_transformed_multiverse_id and 
-          card_details['page_html'].match(/Card Name:.+Card Name:/m) and
-          oracle_text.match(/\bflip\b/)
+            card_details['page_html'].match(/Card Name:.+Card Name:/m) and
+            oracle_text.match(/\bflip\b/)
           # hack together the flipped version of the card html
           # and add it's oracle text to the unflipped oracle text
           flipped_name_regex = /Card Name:.+Card Name:<\/div>\s+<div[^>]*>\s+([^<]+)/m
