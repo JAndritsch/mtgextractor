@@ -34,6 +34,7 @@ module MTGExtractor
       @card_details['converted_cost']     = extract_converted_mana_cost
       @card_details['types']              = extract_types
       @card_details['oracle_text']        = extract_oracle_text
+      @card_details['flavor_text']        = extract_flavor_text
       @card_details['mark']               = extract_watermark
       @card_details['power']              = extract_power
       @card_details['toughness']          = extract_toughness
@@ -144,12 +145,14 @@ module MTGExtractor
       if !multipart_card?
         name = extract_name
         single_card_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{name}(.+?Expansion:)/m
-        card_html = card_details['page_html'].match(single_card_regex)[1]
+        card_html = card_html.match(single_card_regex)[1]
       end
 
       if card_html.match(/Card Text:/)
         if card_html.match(/Flavor Text:/)
           oracle_regex = /Card Text:<\/div>(.+?)Flavor Text:/m
+        elsif card_html.match(/Color Indicator:/)
+          oracle_regex = /Card Text:<\/div>(.+?)Color Indicator:/m
         elsif card_html.match(/Watermark:/)
           oracle_regex = /Card Text:<\/div>(.+?)Watermark:/m
         elsif card_html.match(/P\/T:/)
@@ -159,7 +162,7 @@ module MTGExtractor
         end
         oracle_html = card_html.match(oracle_regex)[1]
 
-        oracle_text_regex = /<div.+?class="cardtextbox"[^>]*>(.+?)<\/div>/
+        oracle_text_regex = /<div.+?class=['"]cardtextbox['"][^>]*>(.+?)<\/div>/
         oracle_text = oracle_html.scan(oracle_text_regex).flatten.join("\n\n")
         oracle_text = oracle_text.gsub(/<\/?[ib]>|<\/div>/, '').strip
 
@@ -203,6 +206,36 @@ module MTGExtractor
 
     def extract_printed_text
       # TODO
+    end
+
+    def extract_flavor_text
+      flavor_text = ""
+      card_html = card_details['page_html'].gsub(/<div\s+class="cardtextbox"[^>]*><\/div>/, "")
+
+      if !multipart_card?
+        name = extract_name
+        single_card_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{name}(.+?Expansion:)/m
+        card_html = card_html.match(single_card_regex)[1]
+      end
+
+      if card_html.match(/Flavor Text:/)
+        if card_html.match(/Color Indicator:/)
+          flavor_regex = /Flavor Text:<\/div>(.+?)Color Indicator:/m
+        elsif card_html.match(/Watermark:/)
+          flavor_regex = /Flavor Text:<\/div>(.+?)Watermark:/m
+        elsif card_html.match(/P\/T:/)
+          flavor_regex = /Flavor Text:<\/div>(.+?)P\/T:/m
+        else
+          flavor_regex = /Flavor Text:<\/div>(.+?)Expansion:/m
+        end
+        flavor_html = card_html.match(flavor_regex)[1]
+
+        flavor_text_regex = /<div.+?class=['"]cardtextbox['"][^>]*>(.+?)<\/div>/
+        flavor_text = flavor_html.scan(flavor_text_regex).flatten.join("\n\n")
+        flavor_text = flavor_text.gsub(/<\/?[ib]>|<\/div>/, '').strip
+      end
+
+      flavor_text
     end
 
     def extract_watermark

@@ -94,6 +94,8 @@ def card_details_hash(card_details)
     :mana_cost            => mana_cost,
     :converted_cost       => card_details['converted_cost'],
     :oracle_text          => card_details['oracle_text'],
+    :flavor_text          => card_details['flavor_text'],
+    :mark                 => card_details['mark'],
     :power                => card_details['power'],
     :toughness            => card_details['toughness'],
     :loyalty              => card_details['loyalty'],

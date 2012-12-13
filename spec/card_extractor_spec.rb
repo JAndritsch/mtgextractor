@@ -32,6 +32,7 @@ describe MTGExtractor::CardExtractor do
       @card_extractor.should_receive(:extract_converted_mana_cost)
       @card_extractor.should_receive(:extract_types)
       @card_extractor.should_receive(:extract_oracle_text)
+      @card_extractor.should_receive(:extract_flavor_text)
       @card_extractor.should_receive(:extract_watermark)
       @card_extractor.should_receive(:extract_power)
       @card_extractor.should_receive(:extract_toughness)
@@ -374,7 +375,7 @@ describe MTGExtractor::CardExtractor do
       @card_extractor.card_details['page_html'] = read_gatherer_page("living_plane.html")
       @card_extractor.extract_oracle_text.should == "All lands are 1/1 creatures that are still lands."
 
-      @card_extractor.card_details['multiverse_id'] = '221892'
+      @card_extractor.card_details['multiverse_id'] = '763'
       @card_extractor.card_details['page_html'] = read_gatherer_page("llanowar_elves.html")
       @card_extractor.extract_oracle_text.should == "{tap}: Add {G} to your mana pool."
 
@@ -393,6 +394,146 @@ describe MTGExtractor::CardExtractor do
       @card_extractor.card_details['multiverse_id'] = '222923'
       @card_extractor.card_details['page_html'] = read_gatherer_page("village_bell-ringer.html")
       @card_extractor.extract_oracle_text.should == "Flash (You may cast this spell any time you could cast an instant.)\n\nWhen Village Bell-Ringer enters the battlefield, untap all creatures you control."
+    end
+  end
+
+  describe '#extract_flavor_text' do
+    it "should extract a card's oracle text from a Gatherer card web page" do
+      @card_extractor.card_details['multiverse_id'] = '234429'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("fortress_crab.html")
+      @card_extractor.extract_flavor_text.should == "Unbreakable and unappetizing, the crab grows uninterrupted, sometimes to the size of a cottage and beyond."
+
+      @card_extractor.card_details['multiverse_id'] = '888'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("forest.html")
+      @card_extractor.extract_flavor_text.should == ""
+
+      @card_extractor.card_details['multiverse_id'] = '235600'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("ancient_grudge.html")
+      @card_extractor.extract_flavor_text.should == "If there's anything a werewolf hates, it's a collar—especially Avacyn's Collar, the symbol of her church."
+
+      @card_extractor.card_details['multiverse_id'] = '121158'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("arctic_flats.html")
+      @card_extractor.extract_flavor_text.should == "\"A realm once green now ruled by Frost,\n\nWhere flesh and field both pay its cost.\n\nThose dearly loved, forever lost . . .\"\n\n—The Dynasty of Winter Kings"
+
+      @card_extractor.card_details['multiverse_id'] = '146065'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("ashenmoor_liege.html")
+      @card_extractor.extract_flavor_text.should == "Cinders carry an ancestral grudge that makes them slow to trust and quick to retaliate."
+
+      @card_extractor.card_details['multiverse_id'] = '221284'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("blazing_torch.html")
+      @card_extractor.extract_flavor_text.should == ""
+
+      @card_extractor.card_details['multiverse_id'] = '74489'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("callow_jushi.html")
+      @card_extractor.extract_flavor_text.should == ""
+
+      @card_extractor.card_details['multiverse_id'] = '121140'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("cover_of_winter.html")
+      @card_extractor.extract_flavor_text.should == ""
+
+      @card_extractor.card_details['multiverse_id'] = '201130'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("crimson_kobolds.html")
+      @card_extractor.extract_flavor_text.should == "\"Kobolds are harmless.\"\n\n—Bearand the Bold, epitaph"
+
+      @card_extractor.card_details['multiverse_id'] = '247419'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("devils_play.html")
+      @card_extractor.extract_flavor_text.should == "A devil's hands are never idle."
+
+      @card_extractor.card_details['multiverse_id'] = '338443'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("edric_spymaster_of_trest.html")
+      @card_extractor.extract_flavor_text.should == "\"I am not at liberty to reveal my sources, but I can assure you, the price on your head is high.\""
+
+      @card_extractor.card_details['multiverse_id'] = '244740'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("elbrus_the_binding_blade.html")
+      @card_extractor.extract_flavor_text.should == "Those who grasp its hilt soon hear the demon's call."
+
+      @card_extractor.card_details['multiverse_id'] = '244738'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("withengar_unbound.html")
+      @card_extractor.extract_flavor_text.should == "There are not enough lives on Innistrad to satisfy his thirst for retribution."
+
+      @card_extractor.card_details['multiverse_id'] = '193492'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("eldrazi_conscription.html")
+      @card_extractor.extract_flavor_text.should == "The barest taste of Eldrazi power shatters both realms and identities."
+
+      @card_extractor.card_details['multiverse_id'] = '193452'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("emrakul_the_aeons_torn.html")
+      @card_extractor.extract_flavor_text.should == ""
+
+      @card_extractor.card_details['multiverse_id'] = '87599'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("erayo_soratami_ascendant.html")
+      @card_extractor.extract_flavor_text.should == ""
+
+      @card_extractor.card_details['multiverse_id'] = '87599'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("erayo_essence.html")
+      @card_extractor.extract_flavor_text.should == ""
+
+      @card_extractor.card_details['multiverse_id'] = '229965'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("evil_twin.html")
+      @card_extractor.extract_flavor_text.should == "You can always tell the evil one by the dagger he's sticking in you."
+
+      @card_extractor.card_details['multiverse_id'] = '259270'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("fire-field_ogre.html")
+      @card_extractor.extract_flavor_text.should == ""
+
+      @card_extractor.card_details['multiverse_id'] = '292753'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("fire_ice_fire.html")
+      @card_extractor.extract_flavor_text.should == ""
+
+      @card_extractor.card_details['multiverse_id'] = '292753'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("fire_ice_ice.html")
+      @card_extractor.extract_flavor_text.should == ""
+
+      @card_extractor.card_details['multiverse_id'] = '233242'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("gavony_township.html")
+      @card_extractor.extract_flavor_text.should == "\"The protective wards of the church have weakened, and no one can tell us why. It's time to look to our own defenses.\"\n\n—Gregel, militia leader"
+
+      @card_extractor.card_details['multiverse_id'] = '230792'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("grimoire_of_the_dead.html")
+      @card_extractor.extract_flavor_text.should == ""
+
+      @card_extractor.card_details['multiverse_id'] = '244678'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("heartless_summoning.html")
+      @card_extractor.extract_flavor_text.should == "\"They won't be winning any beauty pageants, but they'll do the trick.\"\n\n—Enslow, ghoulcaller of Nephalia"
+
+      @card_extractor.card_details['multiverse_id'] = '241988'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("hinterland_harbor.html")
+      @card_extractor.extract_flavor_text.should == "In places where the sea meets the trees, it's easy to forget the darkness that rules most of Innistrad."
+
+      @card_extractor.card_details['multiverse_id'] = '227084'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("kruin_outlaw.html")
+      @card_extractor.extract_flavor_text.should == "\"Hold tight. I've got a surprise for them.\""
+
+      @card_extractor.card_details['multiverse_id'] = '227090'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("terror_of_kruin_pass.html")
+      @card_extractor.extract_flavor_text.should == ""
+
+      @card_extractor.card_details['multiverse_id'] = '235597'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("liliana_of_the_veil.html")
+      @card_extractor.extract_flavor_text.should == ""
+
+      @card_extractor.card_details['multiverse_id'] = '201207'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("living_plane.html")
+      @card_extractor.extract_flavor_text.should == ""
+
+      @card_extractor.card_details['multiverse_id'] = '763'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("llanowar_elves.html")
+      @card_extractor.extract_flavor_text.should == "Whenever the Llanowar Elves gather the fruits of their forest, they leave one plant of each type untouched, considering that nature's portion."
+
+      @card_extractor.card_details['multiverse_id'] = '233051'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("moltensteel_dragon.html")
+      @card_extractor.extract_flavor_text.should == "An apocalypse in dragon form."
+
+      @card_extractor.card_details['multiverse_id'] = '253532'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("rakdos_lord_of_riots.html")
+      @card_extractor.extract_flavor_text.should == ""
+
+      @card_extractor.card_details['multiverse_id'] = '220387'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("skeletal_grimace.html")
+      @card_extractor.extract_flavor_text.should == "\"And then I realized we all have skeletons on the inside. Why wait until the bodies are dead to control them?\"\n\n—Jadar, ghoulcaller of Nephalia"
+
+      @card_extractor.card_details['multiverse_id'] = '222923'
+      @card_extractor.card_details['page_html'] = read_gatherer_page("village_bell-ringer.html")
+      @card_extractor.extract_flavor_text.should == "\"Priests, hunters, slayers—to arms! The enemy approaches!\""
     end
   end
 
