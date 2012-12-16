@@ -9,3 +9,5 @@ versions:
 
 - Write some good documentation on using this gem and provide a sample Rails app
 showing how it can be set up.
+
+- Figure out an actual gem versioning scheme that works.
