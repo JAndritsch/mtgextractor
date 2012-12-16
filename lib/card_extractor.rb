@@ -12,7 +12,7 @@ module MTGExtractor
     if RUBY_PLATFORM == "java"
       require 'java'
     else
-      require 'iconv' if RUBY_VERSION.match(/1\.8\.\d+/)
+      require 'iconv' if RUBY_VERSION < "1.9.0"
     end
 
     attr_accessor :url, :card_details
@@ -337,7 +337,7 @@ module MTGExtractor
     # MRI (no JRuby) 1.8.7 needs Iconv
     def convert_to_utf_8(response)
       if RUBY_PLATFORM == "java"
-        if RUBY_VERSION.match(/1\.9\.\d+/)
+        if RUBY_VERSION > "1.9.0"
           response.force_encoding("utf-8")
         else
           bytes = response.to_java_bytes
@@ -345,7 +345,7 @@ module MTGExtractor
           String.from_java_bytes(converted_bytes)
         end
       else
-        if RUBY_VERSION.match(/1\.9\.\d+/)
+        if RUBY_VERSION > "1.9.0"
           response.force_encoding("utf-8")
         else
           ::Iconv.conv('UTF-8//IGNORE', 'UTF-8', response + ' ')[0..-2]
