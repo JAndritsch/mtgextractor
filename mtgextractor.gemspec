@@ -4,7 +4,7 @@ Gem::Specification.new do |gem|
   gem.authors       = ["Joel Andritsch", "Damon Butler"]
   gem.email         = ["joel.andritsch@gmail.com", "iamdamocles@gmail.com"]
   gem.description   = %q{MTGExtractor is a Ruby gem that allows you to extract Magic: The Gathering card information from the Gatherer website.}
-  gem.summary       = %q{Extract MTG card info from Gatherer}
+  gem.summary       = %q{Extract MTG card data from Gatherer}
   gem.homepage      = "https://github.com/JAndritsch/mtgextractor"
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
