@@ -18,8 +18,7 @@ Rails applications that use this gem will be able to:
   - Have their own database of MTG cards and MTG-related information
   - Have automatically generated ActiveRecord models available to their application
   that allow them access to the data
-  - Have a simple way to update their database when new cards or sets release
-  via rake tasks.
+  - Have access to simple rake tasks for updating the database whenever new sets release
 
 ## Installation
 
@@ -107,9 +106,96 @@ the following ActiveRecord models in your Rails application:
   - **MtgCard**: Contains card attributes like name, mana cost, oracle text...
   - **MtgSet**: A set, such as "Innistrad".
   - **MtgType**: A card type, like "Land", "Instant", "Human", "Creature", etc...
-  - **MtgCardType**: An associative entity for the many-to-many relationship between MtgCard and MtgType.
+  - **MtgCardType**: An associative class that bridges the many-to-many relationship between MtgCard and MtgType.
 
-More documentation on this in progress...
+### MtgCard
+
+This model provides you with a way to access an individual card. It contains the following attributes:
+
+    :name
+    :gatherer_url
+    :multiverse_id
+    :gatherer_image_url
+    :mana_cost
+    :converted_cost
+    :oracle_text
+    :flavor_text
+    :mark
+    :power
+    :toughness
+    :loyalty
+    :rarity
+    :transformed_id
+    :colors
+    :artist
+
+MtgCard also has a couple convenience methods:
+
+  - transformed_side: Returns a new MtgCard object that is the transformed side of the current card. If
+  the card does not transform, nil is returned.
+  - image_url: Returns the URL for where the card's local image is stored. 
+  - set_symbol_url: Returns the URL for the card's set symbol.
+
+Additionally, MtgCard has several relationships to other models. The relationships are:
+
+  - MtgCard belongs to MtgSet.
+  - MtgCard has many MtgTypes
+
+You can access a card's set and types through ActiveRecord relations. These relationships are already
+set up and can be used as follows:
+
+    some_card  = MtgCard.first
+    set_name   = some_card.set     # An MtgSet object that responds to :name
+    types      = some_card.types   # An array of MtgType objects that responds to :name
+
+### MtgSet
+
+This class models after an MTG set and has the following attributes:
+
+    :name
+
+MtgSet also has a few convenience methods:
+
+  - folder_name: Returns the name of the folder that all the card and set images will be found.
+  The folder name is a slugified version of the set name. 
+
+The remaining methods simply return the local path to the set's icon for each different rarity type.
+
+  - common_icon:
+  - uncommon_icon:
+  - rare_icon:
+  - mythic_icon:
+  - special_icon:
+  - promo_icon:
+  - land_icon:
+
+The relationships for MtgSet are:
+
+  - MtgSet has many MtgCards
+
+This relationship allows you to ask a set for all of its cards:
+
+    some_set      = MtgSet.first
+    cards_for_set = some_set.cards # An array of MtgCard objects
+
+### MtgType
+
+The last useful class is MtgType, which models after a card type (such as "Instant") and
+has the following attributes:
+
+    :name
+
+A relationship exists between MtgCard and MtgType, which looks like this:
+
+  - MtgType has many MtgCards
+
+Because MtgCard also has many MtgTypes, the MtgCardType class exists to bridge that many-to-many
+relationship. Having this relationship allows you to ask an MtgType for all cards that have that
+type:
+
+    some_type          = MtgType.first
+    cards_of_that_type = some_type.cards  # An array of MtgCard objects
+
 
 ## As a standalone gem
 
