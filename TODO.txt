@@ -1,8 +1,6 @@
 Misc:
 ------------------------------------------------
 
-- Write rspec tests around lib/set_extractor.rb.
-
 - We want this gem to work with Rails 3.0 and up. We still need to test it out on these
 versions:
 
