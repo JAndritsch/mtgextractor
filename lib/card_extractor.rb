@@ -204,10 +204,6 @@ module MTGExtractor
       oracle_text
     end
 
-    def extract_printed_text
-      # TODO
-    end
-
     def extract_flavor_text
       flavor_text = ""
       card_html = card_details['page_html'].gsub(/<div\s+class="cardtextbox"[^>]*><\/div>/, "")
