@@ -108,6 +108,8 @@ the following ActiveRecord models in your Rails application:
   - **MtgType**: A card type, like "Land", "Instant", "Human", "Creature", etc...
   - **MtgCardType**: An associative class that bridges the many-to-many relationship between MtgCard and MtgType.
 
+These classes are copied from this gem into your Rails application's app/models folder when you run the generator.
+
 ### MtgCard
 
 This model provides you with a way to access an individual card. It contains the following attributes:
@@ -150,7 +152,7 @@ set up and can be used as follows:
 
 ### MtgSet
 
-This class models after an MTG set and has the following attributes:
+This class models a set and has the following attributes:
 
     :name
 
@@ -195,7 +197,6 @@ type:
 
     some_type          = MtgType.first
     cards_of_that_type = some_type.cards  # An array of MtgCard objects
-
 
 ## As a standalone gem
 
