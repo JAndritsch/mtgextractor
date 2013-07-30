@@ -100,6 +100,9 @@ describe MTGExtractor::CardExtractor do
 
       @card_extractor.card_details['page_html'] = read_gatherer_page('fire_ice_ice.html')
       @card_extractor.multipart_card?.should be_true
+
+      @card_extractor.card_details['page_html'] = read_gatherer_page('alive_well.html')
+      @card_extractor.multipart_card?.should be_true
     end
   end
 
@@ -254,6 +257,9 @@ describe MTGExtractor::CardExtractor do
 
       @card_extractor.card_details['page_html'] = read_gatherer_page('urzas_mine.html')
       @card_extractor.extract_types.should == ['Land', "Urza’s", 'Mine']
+
+      @card_extractor.card_details['page_html'] = read_gatherer_page('alive_well.html')
+      @card_extractor.extract_types.should == ['Sorcery']
     end
   end
 

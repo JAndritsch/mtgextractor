@@ -63,7 +63,7 @@ module MTGExtractor
     end
 
     def multipart_card?
-      card_details['page_html'].match(/This is one part of the multi-part card/) != nil
+      extract_name.match(/\/\//) != nil
     end
 
     def extract_mana_cost
