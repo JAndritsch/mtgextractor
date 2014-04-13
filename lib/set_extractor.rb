@@ -6,6 +6,7 @@ module MTGExtractor
 
     require 'restclient'
     require 'uri'
+    require 'cgi'
 
     attr_accessor :name, :url
 
@@ -34,7 +35,7 @@ module MTGExtractor
       set_regex = /value="([^"]+)"/
 
       set_select = response.match(set_select_regex)[0]
-      set_select.scan(set_regex).flatten
+      set_select.scan(set_regex).flatten.map { |n| CGI.unescapeHTML(n) }
     end
 
   end
