@@ -75,9 +75,10 @@ module MTGExtractor
     end
     
     def regex_name(n=extract_name)
-      n.
-        sub("rathi Berserker","(AE|Æ|)rathi Berserker").
-        gsub(/ +/,"\s*")
+      Regexp.quote(n).
+        sub("rathi\\ Berserker","(?:AE|Æ|)rathi Berserker").
+        gsub(/ +/,"\s*").
+        sub(/^(X+)/,"(?:\\1)?")
     end
 
     def multipart_card?
