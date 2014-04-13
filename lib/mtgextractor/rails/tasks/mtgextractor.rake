@@ -39,7 +39,7 @@ def establish_connection
 end
 
 def process_set(set_name)
-  set = MtgSet.find_or_create_by_name(:name => set_name)
+  set = MtgSet.find_or_create_by(:name => set_name)
   if using_asset_pipeline?
     folder_path = "#{Rails.root}/app#{asset_pipeline_prefix}/images/#{set.folder_name}"
   else
@@ -115,7 +115,7 @@ def create_card(card_details, set)
   types = []
   type_names = card_details['types']
   type_names.each do |type|
-    types << MtgType.find_or_create_by_name(type)
+    types << MtgType.find_or_create_by(:name => type)
   end
 
 
