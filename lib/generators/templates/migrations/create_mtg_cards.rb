@@ -7,8 +7,8 @@ class CreateMtgCards < ActiveRecord::Migration
       t.string     :gatherer_image_url
       t.string     :mana_cost
       t.string     :converted_cost
-      t.string     :oracle_text
-      t.string     :flavor_text
+      t.text       :oracle_text
+      t.text       :flavor_text
       t.string     :mark
       t.string     :power
       t.string     :toughness
