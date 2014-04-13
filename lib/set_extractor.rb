@@ -9,7 +9,7 @@ module MTGExtractor
 
     attr_accessor :name, :url
 
-    CARDS_FOR_SET_URL = 'http://gatherer.wizards.com/Pages/Search/Default.aspx?output=checklist&set=["escaped_set_name"]'
+    CARDS_FOR_SET_URL = 'http://gatherer.wizards.com/Pages/Search/Default.aspx?output=compact&set=["escaped_set_name"]'
 
     def initialize(name)
       @name = name
@@ -18,7 +18,7 @@ module MTGExtractor
 
     def get_card_urls
       ids = []
-      response = RestClient.get(@url)
+      response = RestClient.get(@url,:cookies => {:CardDatabaseSettings => "11=7"})
       extract_card_urls(response)
     end
 
