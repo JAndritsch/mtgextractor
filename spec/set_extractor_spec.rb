@@ -14,7 +14,7 @@ describe MTGExtractor::SetExtractor do
       extractor.new("Apocalypse").name.should == "Apocalypse"
     end
     it "should build the URL to the Gatherer page for that set" do
-      dark_ascension_url = 'http://gatherer.wizards.com/Pages/Search/Default.aspx?output=checklist&set=[%22Dark%20Ascension%22]'
+      dark_ascension_url = 'http://gatherer.wizards.com/Pages/Search/Default.aspx?output=compact&set=[%22Dark%20Ascension%22]'
       extractor.new("Dark Ascension").url.should == dark_ascension_url
     end
   end
@@ -26,7 +26,7 @@ describe MTGExtractor::SetExtractor do
       RestClient.stub(:get).and_return(page_html)
     end
     it "should make a request to get the page html for that set" do
-      RestClient.should_receive(:get).with(extractor.url)
+      RestClient.should_receive(:get).with(extractor.url, {:cookies=>{:CardDatabaseSettings=>"11=7"}} )
       extractor.get_card_urls
     end
     it "should extract the individual card urls from the returned html" do
