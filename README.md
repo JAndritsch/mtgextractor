@@ -24,7 +24,7 @@ Rails applications that use this gem will be able to:
 
 Configure your Gemfile:
 
-    gem 'mtgextractor'
+    gem 'mtgextractor', :git => 'git://github.com/JAndritsch/mtgextractor.git'
 
 Install the gem:
 
@@ -239,4 +239,4 @@ MTGExtractor has been tested against the following Ruby versions:
 
 MTGExtractor has been tested against the following Rails versions:
 
-  - 3.2.6
+  - 3.2.6+
