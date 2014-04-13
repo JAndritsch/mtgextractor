@@ -73,6 +73,12 @@ module MTGExtractor
       page_html = html ? html : card_details['page_html']
       page_html.match(match_data)[1]
     end
+    
+    def regex_name(n=extract_name)
+      n.
+        sub("rathi Berserker","(AE|Æ|)rathi Berserker").
+        gsub(/ +/,"\s*")
+    end
 
     def multipart_card?
       extract_name.match(/\/\//) != nil
@@ -98,8 +104,7 @@ module MTGExtractor
       if multipart_card?
         mana_cost = convert_mana_cost(card_details['page_html'])
       else
-        name = extract_name
-        mana_cost_group_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?Mana Cost:.+?<div[^>]*>(.+?)<\/div>/mi
+        mana_cost_group_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{regex_name}.+?Mana Cost:.+?<div[^>]*>(.+?)<\/div>/mi
         mana_cost_group = card_details['page_html'].match(mana_cost_group_regex)
         mana_cost = mana_cost_group ? convert_mana_cost(mana_cost_group[1]) : nil
       end
@@ -118,8 +123,7 @@ module MTGExtractor
       if multipart_card?
         cmc = convert_converted_mana_cost(card_details['page_html'])
       else
-        name = extract_name
-        cmc_group_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?Converted Mana Cost:<\/div>\s+<div[^>]*>[^<]+/mi
+        cmc_group_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{regex_name}.+?Converted Mana Cost:<\/div>\s+<div[^>]*>[^<]+/mi
         cmc_group = card_details['page_html'].match(cmc_group_regex)
         cmc = cmc_group ? convert_converted_mana_cost(cmc_group[0]) : nil
       end
@@ -138,7 +142,7 @@ module MTGExtractor
         card_types_regex = /Types:<\/div>\s+<div[^>]*>\s+([^>]+)<\/div>/
       else
         name = extract_name(page_html)
-        card_types_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?Types:<\/div>\s+<div[^>]*>\s+([^>]+)<\/div>)/mi
+        card_types_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{regex_name(name)}.+?Types:<\/div>\s+<div[^>]*>\s+([^>]+)<\/div>)/mi
       end
       card_types = page_html.match(card_types_regex)[1]
       if card_types
@@ -155,8 +159,7 @@ module MTGExtractor
       oracle_text = ""
 
       if !multipart_card?
-        name = extract_name
-        single_card_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{name}(.+?Expansion:)/mi
+        single_card_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{regex_name}(.+?Expansion:)/mi
         card_html = card_html.match(single_card_regex)[1]
       end
 
@@ -221,8 +224,7 @@ module MTGExtractor
       card_html = card_details['page_html'].gsub(/<div\s+class="cardtextbox"[^>]*><\/div>/, "")
 
       if !multipart_card?
-        name = extract_name
-        single_card_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{name}(.+?Expansion:)/mi
+        single_card_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{regex_name}(.+?Expansion:)/mi
         card_html = card_html.match(single_card_regex)[1]
       end
 
@@ -247,8 +249,7 @@ module MTGExtractor
     end
 
     def extract_watermark
-      name = extract_name
-      watermark_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?Watermark:<\/div>\s+<div class="value">\s+<div class="cardtextbox">(.+?)<\/div>)/mi
+      watermark_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{regex_name}.+?Watermark:<\/div>\s+<div class="value">\s+<div class="cardtextbox">(.+?)<\/div>)/mi
       match = card_details['page_html'].match(watermark_regex)
       match ? match[1].gsub(/<\/?[ib]>|<\/div>/, '').strip : nil
     end
@@ -256,7 +257,7 @@ module MTGExtractor
     def extract_power(html=nil)
       page_html = html ? html : card_details['page_html']
       name = extract_name(page_html)
-      creature_power_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?P\/T:<\/div>\s+<div class="value">\s+(\d+) \/ \d+)/mi
+      creature_power_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{regex_name(name)}.+?P\/T:<\/div>\s+<div class="value">\s+(\d+) \/ \d+)/mi
       match = page_html.match(creature_power_regex)
       match ? match[1] : nil
     end
@@ -264,7 +265,7 @@ module MTGExtractor
     def extract_toughness(html=nil)
       page_html = html ? html : card_details['page_html']
       name = extract_name(page_html)
-      creature_toughness_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?P\/T:<\/div>\s+<div class="value">\s+\d+ \/ (\d+))/mi
+      creature_toughness_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{regex_name(name)}.+?P\/T:<\/div>\s+<div class="value">\s+\d+ \/ (\d+))/mi
       match = page_html.match(creature_toughness_regex)
       match ? match[1] : nil
     end
@@ -277,8 +278,7 @@ module MTGExtractor
 
     def extract_color_indicator
       if !multipart_card?
-        name = extract_name
-        single_card_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{name}(.+?Expansion:)/mi
+        single_card_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{regex_name}(.+?Expansion:)/mi
         html = card_details['page_html'].match(single_card_regex)[1]
       else
         html = card_details['page_html']
@@ -325,8 +325,7 @@ module MTGExtractor
     end
 
     def extract_artist
-      name = extract_name
-      artist_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{name}.+?artist=\[%22([^%]+)%22\])/mi
+      artist_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{regex_name}.+?artist=\[%22([^%]+)%22\])/mi
       match = card_details['page_html'].match(artist_regex)
       match ? match[1] : ""
     end
