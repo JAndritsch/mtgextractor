@@ -1,6 +1,12 @@
-# NOTICE:
+# Notice/Legal Stuff
 
-This gem is not complete and should not be used in any Rails applications yet.
+This project is not affiliated in any way with Wizards of the Coast (WotC). The
+maintainers of MTGExtractor do not own the rights to use or distribute any of 
+Wizards' intellectual property. For more information, consult with a legal 
+representative from WotC.
+
+Contributors to MTGExtractor will not be held responsible for however you
+use our software, so use at your own risk!
 
 # MTGExtractor
 
