@@ -1,4 +1,4 @@
-# Notice/Legal Stuff
+## Notice/Legal Stuff
 
 This project is not affiliated in any way with Wizards of the Coast (WotC). The
 maintainers of MTGExtractor do not own the rights to use or distribute any of 
