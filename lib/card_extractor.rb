@@ -314,7 +314,11 @@ module MTGExtractor
 
     def extract_rarity
       match_data = /Rarity:<\/div>\s+<div[^>]*>\s+<span[^>]*>([\w\s]*)/
-      match = card_details['page_html'].match(match_data)[1]
+      if match_data=~card_details['page_html'] then
+        $~[1]
+      else
+        ''
+      end
     end
 
     def extract_transformed_multiverse_id
