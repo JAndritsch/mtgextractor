@@ -24,10 +24,7 @@ module MTGExtractor
       @card_details['multiverse_id'] = extract_multiverse_id(url)
     end
 
-    def get_card_details
-      response = RestClient.get(url)
-      @card_details['page_html']          = convert_to_utf_8(response)
-
+    def parse_page
       @card_details['gatherer_image_url'] = build_image_url
       @card_details['name']               = extract_name
       @card_details['mana_cost']          = extract_mana_cost
@@ -46,6 +43,21 @@ module MTGExtractor
       @card_details['set_icon_url']       = extract_expansion_symbol_url
 
       @card_details
+    end
+    
+    def get_card_details
+      response = RestClient.get(url)
+      @card_details['page_html']          = convert_to_utf_8(response)
+
+      parse_page
+    end
+    
+    def next_card_details
+      namepart=@card_details['page_html'].lines.grep(/ctl00_ctl00_ctl00_MainContent_SubContent_SubContentHeader_subtitleDisplay/)*"\n"
+      cardpart=@card_details['page_html'].split("End Card Details Table",2)[1]
+      @card_details['page_html']=namepart+"\n"+cardpart
+      
+      parse_page
     end
 
     def extract_multiverse_id(url)

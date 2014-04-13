@@ -70,12 +70,8 @@ def process_set(set_name)
     # If the card is a multipart card, we need to create its other 'part' as well.
     # Because they share the same multiverse_id, we have to add the &part parameter
     # to grab its other part.
-    if extractor.multipart_card?(html)
-      multiverse_id = card_details['multiverse_id']
-      regex = /\/Pages\/Card\/Details\.aspx\?part=([^&]+)/
-      part_param = html.match(regex)[1]
-      url = "#{card_details['gatherer_url']}&part=#{part_param}"
-      multipart_card_data = MTGExtractor::CardExtractor.new(url).get_card_details
+    if extractor.multipart_card?
+      multipart_card_data = extractor.next_card_details
       create_card(multipart_card_data, set)
     end
 
