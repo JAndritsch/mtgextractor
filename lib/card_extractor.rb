@@ -46,7 +46,18 @@ module MTGExtractor
     end
     
     def get_card_details
-      response = RestClient.get(url)
+      success = false
+
+      # retry getting card details until successful
+      while success == false
+        begin
+          response = RestClient.get(url)
+          success = true
+        rescue
+          sleep 2
+          puts "RETRYING get_card_details..."
+        end
+      end
       @card_details['page_html']          = convert_to_utf_8(response)
 
       parse_page
