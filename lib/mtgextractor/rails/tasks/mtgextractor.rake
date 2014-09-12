@@ -131,7 +131,18 @@ def download_set_icon(card, set, gatherer_symbol_url)
     full_path = "#{Rails.root}/public/images/#{set.folder_name}/#{slugify(card.rarity)}_icon.jpg"
   end
   unless File.exists?(full_path)
-    image_data = RestClient.get(gatherer_symbol_url)
+    success = false
+
+    # retry downloading the set icon
+    while success == false
+      begin
+        image_data = RestClient.get(gatherer_symbol_url)
+        success = true
+      rescue
+        sleep 2
+        puts "RETRYING download_set_icon..."
+      end
+    end
     File.open(full_path, "wb") do |f|
       f.write(image_data)
     end
@@ -139,7 +150,18 @@ def download_set_icon(card, set, gatherer_symbol_url)
 end
 
 def download_card_image(card, set)
-  image_data = RestClient.get(card.gatherer_image_url)
+  success = false
+
+  # retry downloading card image until successful
+  while success == false
+    begin
+      image_data = RestClient.get(card.gatherer_image_url)
+      success = true
+    rescue
+      sleep 2
+      puts "RETRYING download_card_image..."
+    end
+  end
   if using_asset_pipeline?
     full_path = "#{Rails.root}/app#{asset_pipeline_prefix}/images/#{set.folder_name}/#{card.multiverse_id}.jpg"
   else

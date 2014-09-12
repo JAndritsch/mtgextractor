@@ -46,7 +46,18 @@ module MTGExtractor
     end
     
     def get_card_details
-      response = RestClient.get(url)
+      success = false
+
+      # retry getting card details until successful
+      while success == false
+        begin
+          response = RestClient.get(url)
+          success = true
+        rescue
+          sleep 2
+          puts "RETRYING get_card_details..."
+        end
+      end
       @card_details['page_html']          = convert_to_utf_8(response)
 
       parse_page
@@ -258,17 +269,17 @@ module MTGExtractor
     def extract_power(html=nil)
       page_html = html ? html : card_details['page_html']
       name = extract_name(page_html)
-      creature_power_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{regex_name(name)}.+?P\/T:<\/div>\s+<div class="value">\s+(\d+) \/ \d+)/mi
-      match = page_html.match(creature_power_regex)
-      match ? match[1] : nil
+      creature_power_regex = /P\/T:.*\n.*\n\s*(\d)\s\/\s\d/mi
+      match = page_html[creature_power_regex, 1]
+      match ? match : nil
     end
 
     def extract_toughness(html=nil)
       page_html = html ? html : card_details['page_html']
       name = extract_name(page_html)
-      creature_toughness_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{regex_name(name)}.+?P\/T:<\/div>\s+<div class="value">\s+\d+ \/ (\d+))/mi
-      match = page_html.match(creature_toughness_regex)
-      match ? match[1] : nil
+      creature_toughness_regex = /P\/T:.*\n.*\n\s*\d\s\/\s(\d)/mi
+      match = page_html[creature_toughness_regex, 1]
+      match ? match : nil
     end
 
     def extract_loyalty

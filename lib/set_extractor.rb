@@ -19,7 +19,18 @@ module MTGExtractor
 
     def get_card_urls
       ids = []
-      response = RestClient.get(@url,:cookies => {:CardDatabaseSettings => "11=7"})
+
+      # retry getting card urls until successful
+      success = false
+      while success == false
+        begin
+          response = RestClient.get(@url,:cookies => {:CardDatabaseSettings => "11=7"})
+          success = true
+        rescue
+          sleep 2
+          puts "RETRYING get_card_urls..."
+        end
+      end
       extract_card_urls(response)
     end
 
@@ -30,7 +41,7 @@ module MTGExtractor
     end
 
     def self.get_all_sets
-      response = RestClient.get('http://gatherer.wizards.com/Pages/Default.aspx')
+      response = RestClient.get('http://gatherer.wizards.com')
       set_select_regex = /<select name="ctl00\$ctl00\$MainContent\$Content\$SearchControls\$setAddText" id="ctl00_ctl00_MainContent_Content_SearchControls_setAddText">\s*(<option[^>]*>[^>]*<\/option>\s*)+<\/select>/
       set_regex = /value="([^"]+)"/
 
