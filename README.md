@@ -1,3 +1,11 @@
+## This project is no longer maintained
+
+Due to time constraints and personal issues, the maintainers of this project are not able to work on
+MTGExtractor any longer. You are welcome to fork and maintain a copy of this repo if you wish, but
+active development on this project has stopped.
+
+Check out this repo instead: [https://github.com/MagicTheGathering/mtg-sdk-ruby](https://github.com/MagicTheGathering/mtg-sdk-ruby).
+
 ## Notice/Legal Stuff
 
 This project is not affiliated in any way with Wizards of the Coast (WotC). The
